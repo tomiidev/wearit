@@ -785,7 +785,7 @@ Men
 }
 
 #men .item .down-content {
-  padding-top: 30px;
+/*   padding-top: 30px; */
   position: relative;
   z-index: 3;
   background-color: #fff;
@@ -806,9 +806,9 @@ Men
 }
 
 #men .item .down-content ul.stars {
-  position: absolute;
+  /* position: absolute; */
   right: 0;
-  top: 30px;
+/*   top: 30px; */
 }
 
 #men .item .down-content ul.stars li {
@@ -946,7 +946,7 @@ Women
 }
 
 #women .item .down-content {
-  padding-top: 30px;
+ /*  padding-top: 30px; */
   position: relative;
   z-index: 3;
   background-color: #fff;
@@ -967,9 +967,9 @@ Women
 }
 
 #women .item .down-content ul.stars {
-  position: absolute;
+ /*  position: absolute; */
   right: 0;
-  top: 30px;
+ /*  top: 30px; */
 }
 
 #women .item .down-content ul.stars li {
@@ -1106,7 +1106,7 @@ Kids
 }
 
 #kids .item .down-content {
-  padding-top: 30px;
+  /* padding-top: 30px; */
   position: relative;
   z-index: 3;
   background-color: #fff;
@@ -1127,9 +1127,9 @@ Kids
 }
 
 #kids .item .down-content ul.stars {
-  position: absolute;
+  /* position: absolute; */
   right: 0;
-  top: 30px;
+ /*  top: 30px; */
 }
 
 #kids .item .down-content ul.stars li {
@@ -1645,9 +1645,9 @@ Products Page
 }
 
 #products .item .down-content ul.stars {
-  position: absolute;
+ /*  position: absolute; */
   right: 0;
-  top: 20px;
+ /*  top: 20px; */
 }
 
 #products .item .down-content ul.stars li {

@@ -9,6 +9,9 @@ import WpButton from "./wp"
 
 const Home = () => {
     const isMobile = useIsMobile();
+    const isOnPromotion = true; // Variable para determinar si el producto está en promoción
+    const isDestacado = true; // Variable para determinar si el producto está en promoción
+
 
     return (
 
@@ -25,7 +28,7 @@ const Home = () => {
                             <div class="left-content">
                                 <div class="thumb">
                                     <div class="inner-content">
-                                        <h3 className="text-white">Somos Hexashop</h3>
+                                        <h3 className="text-white font-poppins">Somos Wearit</h3>
                                         <h5 className="text-white italic font-light">Moda de hombres, mujeres y niños</h5>
                                         {/*  <span>Moda de hombres, mujeres y niños</span> */}
                                         {/*   <div class="main-border-button">
@@ -43,13 +46,13 @@ const Home = () => {
                                         <div class="right-first-image">
                                             <div class="thumb">
                                                 <div class="inner-content">
-                                                    <h4>Mujer</h4>
+                                                    <h4 className="font-poppins">Mujer</h4>
                                                     <span>Las mejores colecciones para la Mujer</span>
                                                 </div>
                                                 <div class="hover-content">
                                                     <div class="inner">
-                                                        <h4>Mujer</h4>
-                                                        <p>Vestite a la moda, con confianza.</p>
+                                                        <h4 className="font-poppins">Mujer</h4>
+                                                        <p className="font-questrial">Vestite a la moda, con confianza.</p>
                                                         <div class="main-border-button">
                                                             <Link to="/products">Ver más</Link>
                                                         </div>
@@ -68,8 +71,8 @@ const Home = () => {
                                                 </div>
                                                 <div class="hover-content">
                                                     <div class="inner">
-                                                        <h4>Hombre</h4>
-                                                        <p>Para no perder el estílo.</p>
+                                                        <h4 className="font-poppins">Hombre</h4>
+                                                        <p className="font-questrial">Para no perder el estílo.</p>
                                                         <div class="main-border-button">
                                                             <Link to={"/products"}>Ver más</Link>
                                                         </div>
@@ -83,13 +86,13 @@ const Home = () => {
                                         <div class="right-first-image">
                                             <div class="thumb">
                                                 <div class="inner-content">
-                                                    <h4>Nieños</h4>
-                                                    <span>Prendas para niños</span>
+                                                    <h4 className="font-poppins">Niños</h4>
+                                                    <span className="font-questrial">Prendas para niños</span>
                                                 </div>
                                                 <div class="hover-content">
                                                     <div class="inner">
-                                                        <h4>Niños</h4>
-                                                        <p>Porque el buen gusto se puede tomar desde la niñez.</p>
+                                                        <h4 className="font-poppins">Niños</h4>
+                                                        <p className="font-questrial">Porque el buen gusto se puede tomar desde la niñez.</p>
                                                         <div class="main-border-button">
                                                             <Link to={"/products"}>Ver más</Link>
                                                         </div>
@@ -103,13 +106,13 @@ const Home = () => {
                                         <div class="right-first-image">
                                             <div class="thumb">
                                                 <div class="inner-content">
-                                                    <h4>Accesorios</h4>
-                                                    <span>Tendecias de accesorios</span>
+                                                    <h4 className="font-poppins">Accesorios</h4>
+                                                    <span className="font-questrial">Tendecias de accesorios</span>
                                                 </div>
                                                 <div class="hover-content">
                                                     <div class="inner">
-                                                        <h4>Accesorios</h4>
-                                                        <p>El último toque para el mejor look.</p>
+                                                        <h4 className="font-poppins">Accesorios</h4>
+                                                        <p className="font-questrial">El último toque para el mejor look.</p>
                                                         <div class="main-border-button">
                                                             <Link to="/">Ver más</Link>
                                                         </div>
@@ -132,7 +135,68 @@ const Home = () => {
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="section-heading">
-                                <h2>Últimos de hombre</h2>
+                                <h2 className="font-poppins">Destacados</h2>
+                                <span>Las prendas más preferidas por los demás.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="men-item-carousel">
+                                <div class="owl-men-item owl-carousel">
+
+                                    <Swiper
+                                        spaceBetween={50}
+                                        slidesPerView={isMobile ? 1 : 4}
+                                        onSlideChange={() => console.log('slide change')}
+                                        onSwiper={(swiper) => console.log(swiper)}
+                                    >
+                                        {
+                                            Array.from({ length: 5 }, (_, index) => {
+                                                return (
+
+
+                                                    <SwiperSlide>
+                                                        <div class="item">
+                                                            <Link to={`/products/${index}`} className="flex flex-col h-full">
+                                                                <div class="thumb mb-3 relative">
+
+                                                                    <img src={require("../images/men-01.jpg")} alt="" />
+
+                                                                    {isDestacado && (
+                                                                        <div className="absolute top-5 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-600 text-white py-1 px-3 text-sm font-bold rotate-45">
+                                                                            Destacado
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+
+                                                                <div class="down-content flex flex-col justify-between flex-grow">
+                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
+                                                                    <span className="text-xs md:text-lg font-bold">$120.00</span>
+                                                                </div>
+                                                            </Link>
+                                                        </div>
+
+
+
+                                                    </SwiperSlide>)
+                                            })}</Swiper>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section" id="men">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="section-heading">
+                                <h2 className="font-poppins">Últimos de hombre</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
@@ -169,7 +233,7 @@ const Home = () => {
                                                                     <img src={require("../images/men-01.jpg")} alt="" />
                                                                 </div>
                                                                 <div class="down-content">
-                                                                    <h4>Clasico de Primavera</h4>
+                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$120.00</span>
                                                                     {/*     <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>
@@ -197,7 +261,7 @@ const Home = () => {
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="section-heading">
-                                <h2>Últimos de Mujer</h2>
+                                <h2 className="font-poppins">Últimos de Mujer</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
@@ -234,7 +298,7 @@ const Home = () => {
                                                                     <img src={require("../images/women-01.jpg")} alt="" />
                                                                 </div>
                                                                 <div class="down-content">
-                                                                    <h4>Chaqueta verde</h4>
+                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$75.00</span>
                                                                     {/*   <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>
@@ -263,7 +327,7 @@ const Home = () => {
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="section-heading">
-                                <h2>Últimos de niños</h2>
+                                <h2 className="font-poppins">Últimos de niños</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
@@ -299,7 +363,7 @@ const Home = () => {
                                                                     <img src={require("../images/kid-01.jpg")} alt="" />
                                                                 </div>
                                                                 <div class="down-content">
-                                                                    <h4>Clasico de Primavera</h4>
+                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$120.00</span>
                                                                     {/*   <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>

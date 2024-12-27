@@ -2,8 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        questrial: ["Questrial", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+      },
+    },
   },
   plugins: [],
-}
-
+};
