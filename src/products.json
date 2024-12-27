@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 2,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 3,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 4,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 5,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 6,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 7,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 8,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    },
+    {
+        "id": 9,
+        "name": "Niño Clásico",
+        "price": 30,
+        "image": "../images/men-02.jpg",
+        "link": "/products/9"
+    }
+]
