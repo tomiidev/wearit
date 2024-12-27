@@ -1,6 +1,12 @@
 import { Link } from "react-router";
+import SideMenu from "./sidebar";
+import { useState } from "react";
 /* header-sticky */
 const Header = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const changestate =()=>{
+        setIsOpen(!isOpen);
+    }
     return (
         <header className="header-area">
             <div className="container">
@@ -44,14 +50,17 @@ const Header = () => {
                             </ul>
 
                             {/* Activador del menú (responsivo) */}
-                            <a className="menu-trigger mt-5" href="/">
+                            <button type="button" onClick={changestate} className="menu-trigger mt-5">
                                 <span>Menú</span>
-                            </a>
+                            </button>
 
                         </nav>
                     </div>
                 </div>
             </div>
+            {
+                isOpen && <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+            }
         </header>
     )
 }

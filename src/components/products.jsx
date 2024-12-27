@@ -86,7 +86,7 @@ const Products = () => {
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <div className="section-heading">
-                                <h2 className="italic">Encontra lo último en moda</h2>
+                                <h2 className="font-poppins  md:text-lg">Encontra lo último en moda</h2>
                                 <span>Colección de estación</span>
                             </div>
                         </div>
