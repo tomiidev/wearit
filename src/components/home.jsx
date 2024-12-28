@@ -391,13 +391,13 @@ const Home = () => {
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="left-content">
-                                <h2>¡Descubrí todas nuestras prendas!</h2>
-                                <span>✨ Descubrí tu estilo, vive tu esencia. ✨</span>
+                            <div class=" text-center">
+                                <h2 className="text-gray-800 text-lg font-poppins">¡Descubrí todas nuestras prendas!</h2>
+                                <span className="text-gray-800 text-lg font-questrial">✨ Descubrí tu estilo, vive tu esencia. ✨</span>
 
-                                <p>La moda no solo se lleva, ¡se siente! Cada prenda que diseñamos y seleccionamos cuenta una historia, celebra la autenticidad y enaltece la belleza única que hay en válidos. Porque creemos que la moda no es solo lo que vestís, es cómo te expresas al mundo.</p>
-                                <p>Camina con confianza, vestite con pasión y creá momentos inolvidables con cada paso. Desde los detalles que enamoran hasta los looks que te empoderan, estamos aquí para acompañarte en cada capítulo de tu vida.</p>
-                                <span>🌟 Sé tendencia. Sé vos. 🌟</span>
+                                <p className="text-gray-800 text-sm mt-2 font-questrial">La moda no solo se lleva, ¡se siente! Cada prenda que diseñamos y seleccionamos cuenta una historia, celebra la autenticidad y enaltece la belleza única que hay en válidos. Porque creemos que la moda no es solo lo que vestís, es cómo te expresas al mundo.</p>
+                                <p className="text-gray-800 text-sm mt-2 font-questrial">Camina con confianza, vestite con pasión y creá momentos inolvidables con cada paso. Desde los detalles que enamoran hasta los looks que te empoderan, estamos aquí para acompañarte en cada capítulo de tu vida.</p>
+                                <span className="text-gray-800 text-sm mt-2 font-poppins">🌟 Sé tendencia. Sé vos. 🌟</span>
                                 <div class="main-border-button">
                                     <Link to={"/products"}>Ver más</Link>
                                 </div>
@@ -547,7 +547,7 @@ const Home = () => {
                             </form>
                         </div>
                         <div class="col-lg-4">
-                            <div class="row">
+                            <div class="row justify-center mx-auto text-center">
                                 <div class="col-6">
                                     <ul>
 
