@@ -6,6 +6,7 @@ import WpButton from "./wp";
 import { Link } from "react-router";
 
 const products = [
+    // Lista de productos (igual a la original)
     {
         id: 1,
         name: "Primavera Clásica",
@@ -20,56 +21,63 @@ const products = [
     },
     {
         id: 3,
-        name: "Amor Nana ‘20",
-        price: "$150.00",
-        image: require("../images/men-03.jpg"),
+        name: "Air Force 1 X",
+        price: "$90.00",
+        image: require("../images/men-02.jpg"),
     },
     {
         id: 4,
-        name: "Nueva Chaqueta Verde",
-        price: "$75.00",
-        image: require("../images/men-01.jpg"),
+        name: "Air Force 1 X",
+        price: "$90.00",
+        image: require("../images/men-02.jpg"),
     },
     {
         id: 5,
-        name: "Vestido Clásico",
-        price: "$45.00",
+        name: "Air Force 1 X",
+        price: "$90.00",
         image: require("../images/men-02.jpg"),
     },
     {
         id: 6,
-        name: "Colección Primavera",
-        price: "$130.00",
-        image: require("../images/men-03.jpg"),
-    },
-    {
-        id: 7,
-        name: "Colección Escolar",
-        price: "$80.00",
+        name: "Air Force 1 X",
+        price: "$90.00",
         image: require("../images/men-02.jpg"),
     },
     {
+        id: 7,
+        name: "Primavera Clásica",
+        price: "$120.00",
+        image: require("../images/men-01.jpg"),
+    },
+    {
         id: 8,
-        name: "Gorra de Verano",
-        price: "$12.00",
+        name: "Primavera Clásica",
+        price: "$120.00",
         image: require("../images/men-01.jpg"),
     },
     {
         id: 9,
-        name: "Niño Clásico",
-        price: "$30.00",
-        image: require("../images/men-02.jpg"),
+        name: "Primavera Clásica",
+        price: "$120.00",
+        image: require("../images/men-01.jpg"),
     },
+    // ...
 ];
 
 const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedFilter, setSelectedFilter] = useState("Todos"); // Estado para el filtro
     const productsPerPage = 6;
     const totalPages = Math.ceil(products.length / productsPerPage);
 
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const currentProducts = products
+        .filter((product) => {
+            if (selectedFilter === "Todos") return true;
+            return product.name.toLowerCase().includes(selectedFilter.toLowerCase());
+        })
+        .slice(indexOfFirstProduct, indexOfLastProduct);
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -83,21 +91,41 @@ const Products = () => {
             <Header />
             <section className="section" id="products">
                 <div className="container mx-auto">
+                    {/* Encabezado */}
                     <div className="row text-center">
                         <div className="col-lg-12">
                             <div className="section-heading">
-                                <h2 className="font-poppins  md:text-lg">Encontra lo último en moda</h2>
+                                <h2 className="font-poppins md:text-lg">Encuentra lo último en moda</h2>
                                 <span>Colección de estación</span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="container mx-auto">
+
+                    {/* Filtros */}
+                    <div className="flex justify-between items-center my-6 px-4">
+                        <div className="flex items-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-filter"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z" /></svg>
+                            <span className="text-gray-800 font-medium">Filtrar por:</span>
+                        </div>
+                        <select
+                            className="border border-gray-300 rounded-lg px-4 py-2 text-gray-700"
+                            value={selectedFilter}
+                            onChange={(e) => setSelectedFilter(e.target.value)}
+                        >
+                            <option value="Todos">Todos</option>
+                            <option value="Primavera">Primavera</option>
+                            <option value="Air">Air</option>
+                            <option value="Chaqueta">Chaqueta</option>
+                            <option value="Niño">Niño</option>
+                        </select>
+                    </div>
+
+                    {/* Productos */}
                     <div className="row flex flex-wrap">
                         {currentProducts.map((product) => (
                             <div key={product.id} className="col-lg-4 p-4 col-6">
                                 <Link to={`/products/${product.id}`}>
-                                    <div className="item  rounded-lg">
+                                    <div className="item rounded-lg">
                                         <div className="thumb">
                                             <img src={product.image} alt={product.name} className="" />
                                         </div>
@@ -115,7 +143,7 @@ const Products = () => {
                                     <button
                                         key={pageNumber}
                                         onClick={() => handlePageChange(pageNumber)}
-                                        className={`px-4 py-2 text-sm font-medium  ${pageNumber === currentPage
+                                        className={`px-4 py-2 text-sm font-medium ${pageNumber === currentPage
                                                 ? "bg-gray-800 text-white"
                                                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                             }`}
