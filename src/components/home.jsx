@@ -142,7 +142,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div class="container">
-                    <div class="row">
+                    <div class="row mx-auto justify-center">
                         <div class="col-lg-12">
                             <div class="men-item-carousel">
                                 <div class="owl-men-item owl-carousel">
@@ -163,7 +163,7 @@ const Home = () => {
                                                             <Link to={`/products/${index}`} className="flex flex-col h-full">
                                                                 <div class="thumb mb-3 relative">
 
-                                                                    <img src={require("../images/men-01.jpg")} alt="" />
+                                                                    <img src={require("../images/men-01.jpg")} className="w-full" alt="" />
 
                                                                     {isDestacado && (
                                                                         <div className="absolute top-5 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-600 text-white py-1 px-3 text-sm font-bold rotate-45">
@@ -174,7 +174,7 @@ const Home = () => {
 
                                                                 <div class="down-content flex flex-col justify-between flex-grow">
                                                                 <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
-                                                                    <span className="text-xs md:text-lg font-bold">$120.00</span>
+                                                                    <span className="text-lg md:text-lg font-bold">$120.00</span>
                                                                 </div>
                                                             </Link>
                                                         </div>
@@ -230,10 +230,10 @@ const Home = () => {
                                                                             <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
                                                                         </ul>
                                                                     </div> */}
-                                                                    <img src={require("../images/men-01.jpg")} alt="" />
+                                                                    <img src={require("../images/men-01.jpg")} alt="" className="w-full" />
                                                                 </div>
                                                                 <div class="down-content">
-                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
+                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$120.00</span>
                                                                     {/*     <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>
@@ -295,10 +295,10 @@ const Home = () => {
                                                                         <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
                                                                     </ul>
                                                                 </div> */}
-                                                                    <img src={require("../images/women-01.jpg")} alt="" />
+                                                                    <img src={require("../images/women-01.jpg")} className="w-full" alt="" />
                                                                 </div>
                                                                 <div class="down-content">
-                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
+                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$75.00</span>
                                                                     {/*   <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>
@@ -360,10 +360,10 @@ const Home = () => {
                                                                         <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
                                                                     </ul>
                                                                 </div> */}
-                                                                    <img src={require("../images/kid-01.jpg")} alt="" />
+                                                                    <img src={require("../images/kid-01.jpg")} alt=""  className="w-full"/>
                                                                 </div>
                                                                 <div class="down-content">
-                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
+                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
                                                                     <span>$120.00</span>
                                                                     {/*   <ul class="stars">
                                                                     <li><i class="fa fa-star"></i></li>
