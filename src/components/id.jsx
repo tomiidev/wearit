@@ -7,8 +7,18 @@ import TopInfo from "./top";
 import products from "../products.json";
 import QuantitySelector from "./quantity_selector";
 import WpButton from "./wp";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { NavLink } from "react-router";
+import { useMediaQuery } from "react-responsive";
+import { useCategories } from "../context/notifications";
+import ProductGrid from "./product";
+import SearchBar from "./search_bar";
 
 const ProductId = () => {
+    const isMobile = useMediaQuery({ maxWidth: 640 });
+    const isTablet = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
+    const { destacados } = useCategories();
+    const slidesToShow = isMobile ? 1 : isTablet ? 2 : 4;
     const { addItemToCart } = useCart();
     const [q, setQ] = useState(1);
     const [product] = useState(products[0]); // Producto por defecto
@@ -71,9 +81,10 @@ const ProductId = () => {
         <>
             <TopInfo />
             <Header />
+            <SearchBar/>
             <section className="section" id="product">
-                <div className="container">
-                    <div className="row">
+                <div className="container-fluid ">
+                    <div className="row justify-center">
                         <div className="col-lg-8 relative">
                             {/* Distintivo de Promoción */}
                             {isDestacado && (
@@ -108,9 +119,9 @@ const ProductId = () => {
                                 />
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        <div className="col-lg-4 sticky top-20 self-start">
                             <div className="right-content">
-                                <h4>Chaqueta verde</h4>
+                                <h4 className="font-poppins">Chaqueta verde</h4>
                                 <span className="price text-xl font-bold">$75.00</span>
 
                                 <p className="text-gray-600 mt-2">Descripción del producto.</p>
@@ -162,7 +173,7 @@ const ProductId = () => {
                                 <div className="total mt-5">
                                     <button
                                         type="button"
-                                        className="border w-full text-white bg-black transition duration-300 rounded-sm font-light tracking-wider px-5 py-2 cursor-pointer"
+                                        className="border w-full text-white bg-black font-poppins transition duration-300 rounded-sm font-light tracking-wider px-5 py-3 cursor-pointer"
                                         onClick={addToCart}
                                     >
                                         Agregar al carrito
@@ -171,6 +182,56 @@ const ProductId = () => {
                             </div>
                         </div>
                     </div>
+                    <section className="featured my-5 container-fluid">
+
+                        <h4 className="text-base sm:text-lg md:text-xl lg:text-2xl font-poppins">Otros usuarios compraron</h4>
+                        <Swiper
+                            spaceBetween={30}
+                            slidesPerView={slidesToShow}
+                            className="my-5"
+                            pagination={{ clickable: true }}
+                        >
+                            {destacados.length > 0 &&
+                                destacados
+                                    /*     .filter((p) => p.destacado === true && p.productoTipo && p.categoria) */
+                                    .map((v, index) => {
+                                        const cleanPath = (path) => (path ? path.replace(/%20|\s+/g, "") : "default");
+                                        const productoTipo = cleanPath(v.productoTipo);
+                                        const categoria = cleanPath(v.categoria);
+                                        // Verifica si los parámetros son válidos
+                                        if (!productoTipo || !categoria) {
+                                            console.error("Parámetros faltantes o inválidos:", v);
+                                            return null; // Salta este producto
+                                        }
+
+                                        console.log(productoTipo, categoria)
+                                        console.log(v)
+                                        return (
+                                            <SwiperSlide>
+
+                                                <div className="col-lg-12 col-md-12 col-sm-12 col-12" key={index}>
+                                                    <NavLink
+                                                        className="no-underline"
+                                                        to={`/shop/${productoTipo}/${categoria}/${v._id}`}
+                                                    >
+                                                        <ProductGrid
+                                                            key={index}
+                                                            _id={v._id}
+                                                            productoTipo={productoTipo}
+                                                            categoria={categoria}
+                                                            precio={v.precio ? v.precio : 0}
+                                                            titulo={v.titulo}
+                                                            imagesAdded={v.imagesAdded}
+                                                            variantes={v.variantes}
+                                                        />
+                                                    </NavLink>
+                                                </div>
+                                            </SwiperSlide>
+                                        );
+                                    })}
+
+                        </Swiper>
+                    </section>
                 </div>
             </section>
             <Footer />

@@ -1,47 +1,37 @@
 import React, { useState } from 'react';
-/* import TopInfo from './top'; */
-import Footer from './footer';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/cart';
 import { API_PROD, API_URL } from '../lib/apis';
-import toast, { Toaster } from 'react-hot-toast';
-/* import SubmitButton from './submit_button'; */
+import SubmitButton from './submit_button';
+import CartHeader from './header_cart';
+import ShoppingCartModal from './modal';
+import { IconMap, IconMap2 } from '@tabler/icons-react';
+import { IoLocationSharp } from 'react-icons/io5';
+import toast from 'react-hot-toast';
 
 const Checkout = () => {
     const { state } = useLocation()
     console.log(state)
     const { cartItems, clearCart /* totalMonto, subtotal, discountAmount */ } = useCart();
-    const [paymentMethod, setPaymentMethod] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState(null);
     const [sandbox_init_point, setSandbox_init_point] = useState('');
     const [deliveryOption, setDeliveryOption] = useState('envio'); // Estado para envío/retiro
     const [isLoading, setIsLoading] = useState(false); // Nuevo estado de carga
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPurchaseComplete, setIsPurchaseComplete] = useState(false);
+    const openModal = () => setIsModalOpen(true);
+    const nv = useNavigate()
+    const handleGoHome = () => nv("/");
+    const closeModal = () => setIsModalOpen(false);
+
     const paymentMethods = [
         { value: 'transferencia', label: 'Transferencia bancaria' },
         { value: 'efectivo', label: 'Efectivo' },
         { value: 'pos', label: 'Pos' },
         { value: 'mp', label: 'Mercado Pago' },
     ];
-    const nv = useNavigate()
-    const renderPaymentMethods = () => {
-        return paymentMethods.map(method => (
-            <div className="checkout__input__checkbox" key={method.value}>
-                <label htmlFor={method.value}>
-                    {method.label}
-                    <input
-                        type="radio"
-                        name="paymentMethod"
-                        value={method.value}
-                        id={method.value}
-                        onChange={(e) => {
-                            setPaymentMethod(method.value);
-                            handleInputChange(e);
-                        }}
-                    />
-                    <span className="checkmark"></span>
-                </label>
-            </div>
-        ));
-    };
+
+
 
     const renderPaymentDetails = () => {
         switch (paymentMethod) {
@@ -51,6 +41,8 @@ const Checkout = () => {
                 return <p>Pagas en efectivo al momento de recibir tu compra.</p>;
             case 'pos':
                 return <p>Pagas con POS en el momento de la entrega.</p>;
+            case 'mp':
+                return <p>Serás redirigido al checkout de Mercado Pago.</p>;
             default:
                 return <p>Selecciona un método de pago para ver los detalles.</p>;
         }
@@ -59,13 +51,14 @@ const Checkout = () => {
         fullName: "",
         deliveryOption: deliveryOption,
         address: "",
+        street_number: "",
         apartment: "",
-        city: "",
         postalCode: "",
+        cupon_code: state.cupon_code,
         phone: "",
         email: "",
         notes: "",
-        paymentMethod: paymentMethod,
+       
     });
 
     // Manejador genérico para actualizar el estado de la compra
@@ -77,214 +70,287 @@ const Checkout = () => {
         });
     };
 
-
+    console.log(paymentMethod)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!orderData.fullName || !orderData.address || !orderData.city || !orderData.postalCode || !orderData.phone || !orderData.email ||!orderData.paymentMethod ) {
-            toast.error('Todos los campos son obligatorios.');
+        console.log(orderData)
+        setIsLoading(true); // Activar estado de carga
+        const payload = {
+            ...orderData,
+            paymentMethod: paymentMethod,
+            items: cartItems,
+            totalAmount: state.totalMonto,
+            subtotal: state.subtotal,
+            discountAmount: state.discount,
+        };
+        if (!paymentMethod) {
+            toast.error('Por favor, selecciona un método de pago antes de continuar.');
+            setIsLoading(false);
             return;
         }
-        setIsLoading(true); // Activar estado de carga
 
+        /*  setTimeout(async () => { */
         try {
-            // Simular un retraso en el procesamiento
-            toast.success('Tu compra ha sido realizada con éxito!');
 
+            /* const response = await fetch(`${API_PROD}/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ payload: payload }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al enviar la orden.');
+            }
+
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
+
+            if (data?.sandbox_init_point) {
+                setSandbox_init_point(data.sandbox_init_point);
+                window.location.href = data.sandbox_init_point; // Redirección directa
+            } else {
+                console.log("completa")
+            
+        } */
+           setTimeout(() => {
+               // olver a establecer en false después de agregar al carrito
+               setIsLoading(false);
+               setIsPurchaseComplete(true);
+               openModal();
+           }, 2000);  // 3000 ms = 3 segundos
         } catch (error) {
-            console.error("Error al procesar el pedido:", error);
-            toast.error('Ocurrió un error al realizar la compra.');
+            alert('Hubo un problema al enviar la orden. Por favor, inténtalo de nuevo.');
+            console.error('Error al enviar la orden:', error);
         } finally {
-            setIsLoading(false); // Desactivar estado de carga
+            setIsLoading(false);
+
+            clearCart();  // Limpia el carrito sin depender de otros estados
         }
+
+
+
+
     };
 
+    /*     const gotomp = () => {
+            window.location.href = sandbox_init_point;
+        }
+     */
 
 
+    console.log(orderData)
     return (
         <>
+
             <div className="offcanvas-menu-overlay"></div>
-            {/*    <TopInfo /> */}
-
-
-            <section className="checkout spad">
-                <div className="container">
-                    <div className="checkout__form">
-                        <div className="row text-left">
-
-                            <div className="col-lg-8 col-md-6">
-                                <h6 className="coupon__code">
-                                    <span className="icon_tag_alt"></span>¿Te olvidaste de ingresar un cupón?
-                                    <Link to="/cart">Clickea acá</Link> para ingresarlo
-                                </h6>
-                                <h6 className="checkout__title">Detalle de factura</h6>
-                                <div className="row">
-                                    <div className="col-lg-12">
-                                        <div className="checkout__input">
-                                            <p>Nombre completo<span>*</span></p>
-                                            <input
-                                                value={orderData.fullName} // Vincula el valor al estado
-                                                onChange={handleInputChange} name="fullName" type="text" placeholder="Tu nombre completo" required />
-                                        </div>
+            <CartHeader />
+            <section className="checkout">
+                <div className="container-fluid">
+                    <div className="row justify-center mt-10 pt-10 ">
+                        {/* Primera columna: Formulario */}
+                        <div className="col-lg-6 ml-auto p-3  rounded-sm bg-white text-left">
+                            <h6 className="py-4 px-2 bg-gray-100 mb-4 text-xs font-poppins">
+                                <span className="icon_tag_alt"></span>¿Te olvidaste de ingresar un cupón?
+                                <Link to="/cart" className="text-black ml-2 text-xs">Clickea acá</Link>
+                            </h6>
+                            <h6 className="checkout__title mb-4 font-roboto">Detalle de factura</h6>
+                            <div className="row">
+                                <div className="col-lg-12">
+                                    <div className="checkout__input mb-4">
+                                        <p>Nombre completo<span>*</span></p>
+                                        <input
+                                            value={orderData.fullName}
+                                            onChange={handleInputChange}
+                                            name="fullName"
+                                            type="text"
+                                            placeholder="Tu nombre completo"
+                                            required
+                                            className="form-control"
+                                        />
                                     </div>
-                                </div>
-                                <div className="checkout__input">
-                                    <p>Opciones de entrega<span>*</span></p>
-                                    <select
-
-                                        className="w-full px-4 py-2 border-2 border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
-                                        name='deliveryOption'
-                                        value={deliveryOption}
-                                        onChange={(e) => {
-
-                                            setDeliveryOption(e.target.value); // Actualiza el estado con el valor seleccionado
-                                            handleInputChange(e); // Asegúrate de actualizar el estado del objeto orderData
-                                        }}
-                                        required
-                                    >
-                                        <option value="envio">Envío a domicilio</option>
-                                        <option value="local">Retiro en el local</option>
-                                    </select>
-
-                                </div>
-                                {
-                                    deliveryOption === "envio" ? (
-                                        <div className="checkout__input">
-                                            <p>Dirección<span>*</span></p>
-                                            <input type="text" placeholder="Dirección: calle y esq."
-                                                onChange={handleInputChange} className="checkout__input__add" name="address" />
-                                            <input type="text" name="apartment" placeholder="Apartmento, suite, etc (opcional)" />
-                                        </div>
-                                    ) : <></>
-                                }
-                                <div className="checkout__input mt-5">
-                                    <p>Ciudad<span>*</span></p>
-                                    <input type="text" name="city"
-                                        value={orderData.city}
-                                        onChange={handleInputChange}
-                                        placeholder="Ciudad" required />
-                                </div>
-
-                                <div className="checkout__input">
-                                    <p>Código postal<span>*</span></p>
-                                    <input
-                                        type="text"
-                                        name="postalCode"
-                                        value={orderData.postalCode}
-                                        onChange={handleInputChange}
-                                        placeholder="Código postal"
-                                        required
-                                    />
-                                </div>
-                                <div className="row">
-                                    <div className="col-lg-6">
-                                        <div className="checkout__input">
-                                            <p>Teléfono<span>*</span></p>
-                                            <input
-                                                type="text"
-                                                name="phone"
-                                                value={orderData.phone}
-                                                onChange={handleInputChange}
-                                                placeholder="Teléfono"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-6">
-                                        <div className="checkout__input">
-                                            <p>Email<span>*</span></p>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                value={orderData.email}
-                                                onChange={handleInputChange}
-                                                placeholder="Email"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="checkout__input">
-                                    <p>Nota extra que quieras que sepamos :)<span></span></p>
-                                    <input
-                                        type="text"
-                                        name="notes"
-                                        value={orderData.notes}
-                                        onChange={handleInputChange}
-                                        placeholder="Deja tu mensaje"
-                                    />
-
-
                                 </div>
                             </div>
-                            <div className="col-lg-4 col-md-6">
-                                <div className="checkout__order">
-                                    <h4 className="order__title">Tu orden</h4>
-                                    <div className="checkout__order__products">Producto(s) <span>Total</span></div>
-                                    <ul className="checkout__total__products">
-                                        {
-                                            cartItems.map((product) => (
-                                                <li key={product.id}>{product.titulo} <span>{product.precio * product.cantidad}</span></li>
-                                            ))
-                                        }
-                                    </ul>
-                                    <ul className="checkout__total__all ">
-                                        <li className="flex justify-between">
-                                            Subtotal <div>$ {state.subtotal}</div>
-                                        </li>
-                                        <hr />
-                                        <li className="flex justify-between">
-                                            Descuento <div>- $ {state.discount}</div>
-                                        </li>
-                                        <hr />
-                                        <li className="flex justify-between font-semibold text-gray-600">
-                                            Total <div>$ {state.totalMonto}</div>
-                                        </li>
-                                    </ul>
+                            <div className="checkout__input mb-4">
+                                <p>Opciones de entrega<span>*</span></p>
+                                <select
+                                    className="form-select"
+                                    name="deliveryOption"
+                                    value={deliveryOption}
+                                    onChange={(e) => {
+                                        setDeliveryOption(e.target.value);
+                                        handleInputChange(e);
+                                    }}
+                                    required
+                                >
+                                    <option value="envio">Envío a domicilio</option>
+                                    <option value="local">Retiro en el local</option>
+                                </select>
+                            </div>
+                            {deliveryOption === "envio" && (
+                                <>
+                                    <div className="checkout__input mb-4">
+                                        <p>Dirección<span>*</span></p>
+                                        <input
+                                            type="text"
+                                            placeholder="Dirección: calle y esq."
+                                            onChange={handleInputChange}
+                                            className="form-control mb-3"
+                                            name="address"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="apartment"
+                                            placeholder="N° de apartamento"
+                                            onChange={handleInputChange}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="checkout__input mb-4">
+                                        <p>N° de domicilio<span>*</span></p>
+                                        <input
+                                            type="text"
+                                            placeholder="0000"
+                                            onChange={handleInputChange}
+                                            className="form-control"
+                                            name="street_number"
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            {deliveryOption === "local" && (
+                                <>
+                                    <div className="checkout__input mb-4">
 
-                                    {renderPaymentMethods()}
+                                        <div className="flex w-full sm:w-2/5 items-center p-4 bg-white border-2 border-gray-300 rounded-sm shadow-sm hover:shadow-lg transition-shadow duration-300">
+                                            <div className="flex-shrink-0 bg-red-100 text-red-600 p-2 rounded-full">
+                                                <IoLocationSharp className="h-4 w-4" />
+                                            </div>
+                                            <div className="ml-4">
+                                                <h3 className="text-sm font-poppins text-black"><strong>Montevideo</strong></h3>
+                                                <p className="text-sm font-questrial text-gray-800">Porongos 2419, 11200</p>
 
-                                    <p>{renderPaymentDetails()}</p>
-                                    {/*  <SubmitButton
-                                        orderData={orderData}
-                                        cartItems={cartItems}
-                                        handleSubmit={handleSubmit}
-                                        isLoading={isLoading} // Pasar estado de carga
-                                    /> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
-                                    <p className='mt-2'>*¡IMPORTANTE! Al hacer click en el "¡LISTO!" tu compra quedará registrada en el sistema. Si abonas con Mercado Pago serás redirigido/a al checkout luego de clickear.</p>
-                                    {/*  {
-                                        sandbox_init_point && ( */}
+                            <div className="checkout__input mb-4">
+                                <p>Código postal<span>*</span></p>
+                                <input
+                                    type="text"
+                                    name="postalCode"
+                                    value={orderData.postalCode}
+                                    onChange={handleInputChange}
+                                    placeholder="Código postal"
+                                    className="form-control"
+                                    required
+                                />
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-6">
+                                    <div className="checkout__input mb-4">
+                                        <p>Teléfono<span>*</span></p>
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            value={orderData.phone}
+                                            onChange={handleInputChange}
+                                            placeholder="Teléfono"
+                                            className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-lg-6">
+                                    <div className="checkout__input mb-4">
+                                        <p>Email<span>*</span></p>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={orderData.email}
+                                            onChange={handleInputChange}
+                                            placeholder="Email"
+                                            className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="checkout__input">
+                                <p>Nota extra que quieras que sepamos :)</p>
+                                <input
+                                    type="text"
+                                    name="notes"
+                                    value={orderData.notes}
+                                    onChange={handleInputChange}
+                                    placeholder="Deja tu mensaje"
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
 
+                        {/* Segunda columna: Resumen checkout__order*/}
+                        <div className="col-lg-4 bg-gray-100 pt-10">
+                            <div className="p-3  lg:min-h-screen flex flex-col">
+                                <h4 className=" text-left  font-roboto">Tu orden</h4>
+
+                                <div className="checkout__total__all list-unstyled mb-4 font-questrial text-sm">
+                                    <p className="d-flex justify-content-between">
+                                        Subtotal <span>$ {state.subtotal}</span>
+                                    </p>
+                                    <p className="d-flex justify-content-between">
+                                        Descuento <span>- $ {state.discount}</span>
+                                    </p>
+                                    <p className="d-flex justify-content-between font-weight-bold">
+                                        Total <span>$ {state.totalMonto}</span>
+                                    </p>
+                                </div>
+                                <p className='text-left'>{renderPaymentDetails()}</p>
+                                {paymentMethods.map((method) => (
+
+                                    <div
+                                        key={method.value}
+                                        className={`w-full flex items-center mb-4  p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 
+                                          ${paymentMethod === method.value ? 'border-red-600 ring-2 ring-red-500' : 'border-gray-300'}
+                                         hover:border-gray-500 hover:ring-1 hover:ring-gray-300 focus:outline-none`}
+                                        onClick={() => setPaymentMethod(method.value)}
+                                    >
+                                        <div className={`w-6 h-6 border-2 ${paymentMethod === method.value ? 'border-red-600 bg-red-500' : 'border-gray-300'} 
+                                             rounded-full mr-4 flex items-center justify-center transition-colors duration-300`}>
+                                            {paymentMethod === method.value && <div className="w-4 h-4 bg-white rounded-full"></div>}
+                                        </div>
+                                        <span className="text-sm sm:text-lg text-gray-800 font-questrial">{method.label}</span>
+                                    </div>
+                                ))}
+                                <SubmitButton
+                                    orderData={orderData}
+                                    cartItems={cartItems}
+                                    handleSubmit={handleSubmit}
+                                    isLoading={isLoading}
+                                />
+                                <p className="mt-3  font-questrial text-left">
+                                    <strong>¡IMPORTANTE!</strong>- Al hacer click en el "¡LISTO!" tu compra quedará registrada en el sistema.
+                                </p>
+                                {/*   {sandbox_init_point && (
                                     <button
-                                        /* disabled={sandbox_init_point === ""} */
+                                        disabled={sandbox_init_point === ""}
                                         type="button"
-                                        className={`site-btn w-full bg-black flex items-center justify-center gap-2 ${sandbox_init_point === ""
-                                            ? 'bg-gray-200 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 cursor-pointer'
-                                            }`}
-                                        onClick={handleSubmit}
+                                        className={`btn btn-danger btn-block ${sandbox_init_point === "" ? 'disabled' : ''}`}
+                                        onClick={gotomp}
                                     >
-
-                                        <p className='text-white text-lg'>Pagar</p>
-
-
+                                        Ir a Mercado Pago
                                     </button>
-                                    {/*     )
-                                    } */}
-                                </div>
+                                )} */}
                             </div>
-
-
                         </div>
                     </div>
                 </div>
-
             </section>
-
-
-            <Footer />
-            <Toaster />
+            <ShoppingCartModal closeModal={closeModal} isModalOpen={isModalOpen} isPurchaseComplete={isPurchaseComplete} handleGoHome={handleGoHome} />
         </>
     );
 };

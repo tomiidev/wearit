@@ -6,6 +6,8 @@ module.exports = {
       fontFamily: {
         questrial: ["Questrial", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
+        open: ["Open", "serif"],
+        roboto: ["Roboto", "serif"],
       },
     },
   },

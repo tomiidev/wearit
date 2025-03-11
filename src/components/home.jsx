@@ -6,7 +6,9 @@ import Footer from "./footer"
 import TopInfo from "./top"
 import useIsMobile from "./ismobile"
 import WpButton from "./wp"
-
+import SearchBar from "./search_bar"
+import ProductGrid from "./product"
+import products from "../products.json"
 const Home = () => {
     const isMobile = useIsMobile();
     const isOnPromotion = true; // Variable para determinar si el producto está en promoción
@@ -18,10 +20,11 @@ const Home = () => {
 
 
         <>
-            <TopInfo />
-            <Header />
 
-            <div class="main-banner" id="top">
+            <Header />
+            <SearchBar />
+
+            <div class="main-banner" style={{ paddingTop: "150px" }} id="top">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-6">
@@ -54,7 +57,7 @@ const Home = () => {
                                                         <h4 className="font-poppins">Mujer</h4>
                                                         <p className="font-questrial">Vestite a la moda, con confianza.</p>
                                                         <div class="main-border-button">
-                                                            <Link to="/products">Ver más</Link>
+                                                            <Link to="/shop/Mujer">Ver más</Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -74,7 +77,7 @@ const Home = () => {
                                                         <h4 className="font-poppins">Hombre</h4>
                                                         <p className="font-questrial">Para no perder el estílo.</p>
                                                         <div class="main-border-button">
-                                                            <Link to={"/products"}>Ver más</Link>
+                                                            <Link to={"/shop/Hombre"}>Ver más</Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -94,7 +97,7 @@ const Home = () => {
                                                         <h4 className="font-poppins">Niños</h4>
                                                         <p className="font-questrial">Porque el buen gusto se puede tomar desde la niñez.</p>
                                                         <div class="main-border-button">
-                                                            <Link to={"/products"}>Ver más</Link>
+                                                            <Link to={"/shop/Nino"}>Ver más</Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -114,7 +117,7 @@ const Home = () => {
                                                         <h4 className="font-poppins">Accesorios</h4>
                                                         <p className="font-questrial">El último toque para el mejor look.</p>
                                                         <div class="main-border-button">
-                                                            <Link to="/">Ver más</Link>
+                                                            <Link to="/shop/Accesorio">Ver más</Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,58 +137,30 @@ const Home = () => {
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="section-heading">
+                            <div class="section-heading text-left">
                                 <h2 className="font-poppins">Destacados</h2>
                                 <span>Las prendas más preferidas por los demás.</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row mx-auto justify-center">
-                        <div class="col-lg-12">
-                            <div class="men-item-carousel">
-                                <div class="owl-men-item owl-carousel">
+                <div className="container-fluid">
+                    <div className="row mx-auto justify-center">
+                        <div className="col-lg-12">
+                            <div className="men-item-carousel">
+                                <Swiper
+                                    spaceBetween={50}
+                                    slidesPerView={isMobile ? 1 : 4}
+                                    onSlideChange={() => console.log("slide change")}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    {products.filter(p => p.featured === true).map((d, index) => (
+                                        <SwiperSlide key={index}>
+                                            <ProductGrid {...d} />
+                                        </SwiperSlide>
+                                    ))}
 
-                                    <Swiper
-                                        spaceBetween={50}
-                                        slidesPerView={isMobile ? 1 : 4}
-                                        onSlideChange={() => console.log('slide change')}
-                                        onSwiper={(swiper) => console.log(swiper)}
-                                    >
-                                        {
-                                            Array.from({ length: 5 }, (_, index) => {
-                                                return (
-
-
-                                                    <SwiperSlide>
-                                                        <div class="item">
-                                                            <Link to={`/products/${index}`} className="flex flex-col h-full">
-                                                                <div class="thumb mb-3 relative">
-
-                                                                    <img src={require("../images/men-01.jpg")} className="w-full" alt="" />
-
-                                                                    {isDestacado && (
-                                                                        <div className="absolute top-5 left-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-600 text-white py-1 px-3 text-sm font-bold rotate-45">
-                                                                            Destacado
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-
-                                                                <div class="down-content flex flex-col justify-between flex-grow">
-                                                                <p className="text-md md:text-lg font-questrial">Clasico de Primavera</p>
-                                                                    <span className="text-lg md:text-lg font-bold">$120.00</span>
-                                                                </div>
-                                                            </Link>
-                                                        </div>
-
-
-
-                                                    </SwiperSlide>)
-                                            })}</Swiper>
-
-
-                                </div>
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -195,61 +170,30 @@ const Home = () => {
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="section-heading">
-                                <h2 className="font-poppins">Últimos de hombre</h2>
+                            <div class="section-heading text-left">
+                                <h2 className="font-poppins">De hombre</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="men-item-carousel">
-                                <div class="owl-men-item owl-carousel">
-
-                                    <Swiper
-                                        spaceBetween={50}
-                                        slidesPerView={isMobile ? 1 : 4}
-                                        onSlideChange={() => console.log('slide change')}
-                                        onSwiper={(swiper) => console.log(swiper)}
-                                    >
-                                        {
-                                            Array.from({ length: 5 }, (_, index) => {
-                                                return (
-
-
-                                                    <SwiperSlide>
-                                                        <div class="item">
-                                                            <Link to={`/products/${index}`}>
-                                                                <div class="thumb">
-                                                                    {/*  <div class="hover-content">
-                                                                        <ul>
-                                                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                        </ul>
-                                                                    </div> */}
-                                                                    <img src={require("../images/men-01.jpg")} alt="" className="w-full" />
-                                                                </div>
-                                                                <div class="down-content">
-                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
-                                                                    <span>$120.00</span>
-                                                                    {/*     <ul class="stars">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                </ul> */}
-                                                                </div>
-                                                            </Link>
-                                                        </div>
-                                                    </SwiperSlide>)
-                                            })}</Swiper>
-
-
-                                </div>
+                <div className="container-fluid">
+                    <div className="row mx-auto justify-center">
+                        <div className="col-lg-12">
+                            <div className="men-item-carousel">
+                                <Swiper
+                                    spaceBetween={50}
+                                    slidesPerView={isMobile ? 1 : 4}
+                                    onSlideChange={() => console.log("slide change")}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                  {products.filter(p => p.typeProduct === "Hombre").map((d, index) => (
+                                        <SwiperSlide key={index}>
+                                            <ProductGrid {...d} />
+                                        </SwiperSlide>
+                                    ))}
+                                   
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -260,62 +204,29 @@ const Home = () => {
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="section-heading">
-                                <h2 className="font-poppins">Últimos de Mujer</h2>
+                            <div class="section-heading text-left">
+                                <h2 className="font-poppins">De Mujer</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="women-item-carousel">
-                                <div class="owl-women-item owl-carousel">
-                                    <Swiper
-                                        spaceBetween={50}
-                                        slidesPerView={isMobile ? 1 : 4}
-                                        onSlideChange={() => console.log('slide change')}
-                                        onSwiper={(swiper) => console.log(swiper)}
-                                    >
-                                        {
-                                            Array.from({ length: 5 }, (_, index) => {
-                                                return (
-
-
-                                                    <SwiperSlide>
-
-                                                        <div class="item">
-                                                            <Link to={`/products/${index}`}>
-                                                                <div class="thumb">
-                                                                    {/*  <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
-                                                                </div> */}
-                                                                    <img src={require("../images/women-01.jpg")} className="w-full" alt="" />
-                                                                </div>
-                                                                <div class="down-content">
-                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
-                                                                    <span>$75.00</span>
-                                                                    {/*   <ul class="stars">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                </ul> */}
-                                                                </div>
-                                                            </Link>
-                                                        </div>
-                                                    </SwiperSlide>
-
-                                                )
-                                            })}
-                                    </Swiper>
-                                </div>
+                <div className="container-fluid">
+                    <div className="row mx-auto justify-center">
+                        <div className="col-lg-12">
+                            <div className="men-item-carousel">
+                                <Swiper
+                                    spaceBetween={50}
+                                    slidesPerView={isMobile ? 1 : 4}
+                                    onSlideChange={() => console.log("slide change")}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    {products.filter(p => p.typeProduct === "Mujer").map((d, index) => (
+                                        <SwiperSlide key={index}>
+                                            <ProductGrid {...d} />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -326,61 +237,29 @@ const Home = () => {
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="section-heading">
-                                <h2 className="font-poppins">Últimos de niños</h2>
+                            <div class="section-heading text-left">
+                                <h2 className="font-poppins">De niños</h2>
                                 <span>Prendas al detalle hacen la diferencia.</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="kid-item-carousel">
-                                <div class="owl-kid-item owl-carousel">
-                                    <Swiper
-                                        spaceBetween={50}
-                                        slidesPerView={isMobile ? 1 : 4}
-                                        onSlideChange={() => console.log('slide change')}
-                                        onSwiper={(swiper) => console.log(swiper)}
-                                    >
-                                        {
-                                            Array.from({ length: 5 }, (_, index) => {
-                                                return (
-
-
-                                                    <SwiperSlide>
-                                                        <Link to={`/products/${index}`}>
-                                                            <div class="item">
-                                                                <div class="thumb">
-                                                                    {/*  <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
-                                                                </div> */}
-                                                                    <img src={require("../images/kid-01.jpg")} alt=""  className="w-full"/>
-                                                                </div>
-                                                                <div class="down-content">
-                                                                <p className="text-lg md:text-lg font-questrial">Clasico de Primavera</p>
-                                                                    <span>$120.00</span>
-                                                                    {/*   <ul class="stars">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    </ul> */}
-                                                                </div>
-                                                            </div>
-                                                        </Link>
-                                                    </SwiperSlide>
-                                                )
-                                            })
-                                        }
-                                    </Swiper>
-                                </div>
+                <div className="container-fluid">
+                    <div className="row mx-auto justify-center">
+                        <div className="col-lg-12">
+                            <div className="men-item-carousel">
+                                <Swiper
+                                    spaceBetween={50}
+                                    slidesPerView={isMobile ? 1 : 4}
+                                    onSlideChange={() => console.log("slide change")}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    {products.filter(p => p.typeProduct === "Niño").map((d, index) => (
+                                        <SwiperSlide key={index}>
+                                            <ProductGrid {...d} />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -435,88 +314,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <section class="section" id="social">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="section-heading">
-                                <h2>Mirá lo último en Instagram</h2>
-                                <span>Moda 24/7</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row images">
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Fashion</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-01.jpg")} alt="" />
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>New</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-02.jpg")} alt="" />
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Brand</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-03.jpg")} alt="" />
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Makeup</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-04.jpg")} alt="" />
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Leather</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-05.jpg")} alt="" />
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="thumb">
-                                <div class="icon">
-                                    <a href="http://instagram.com">
-                                        <h6>Bag</h6>
-                                        <i class="fa fa-instagram"></i>
-                                    </a>
-                                </div>
-                                <img src={require("../images/instagram-06.jpg")} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
 
             <div class="subscribe">
                 <div class="container">

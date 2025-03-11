@@ -4,8 +4,10 @@ import Footer from "./footer";
 import TopInfo from "./top";
 import WpButton from "./wp";
 import { Link } from "react-router";
+import SearchBar from "./search_bar";
+import { useCategories } from "../context/notifications";
 
-const products = [
+/* const products = [
     // Lista de productos (igual a la original)
     {
         id: 1,
@@ -63,13 +65,13 @@ const products = [
     },
     // ...
 ];
-
+ */
 const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedFilter, setSelectedFilter] = useState("Todos"); // Estado para el filtro
     const productsPerPage = 6;
+    const { products } = useCategories()
     const totalPages = Math.ceil(products.length / productsPerPage);
-
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = products
@@ -87,10 +89,11 @@ const Products = () => {
 
     return (
         <>
-            <TopInfo />
+
             <Header />
-            <section className="section" id="products">
-                <div className="container mx-auto">
+            <SearchBar />
+            <section className="section pt-10 mt-10" id="products">
+                <div className="container-fluid mx-auto">
                     {/* Encabezado */}
                     <div className="row text-center">
                         <div className="col-lg-12">
@@ -123,15 +126,15 @@ const Products = () => {
                     {/* Productos */}
                     <div className="row flex flex-wrap">
                         {currentProducts.map((product) => (
-                            <div key={product.id} className="col-lg-4 p-4 col-6">
+                            <div key={product.id} className="col-lg-4  col-12">
                                 <Link to={`/products/${product.id}`}>
                                     <div className="item rounded-lg">
                                         <div className="thumb">
                                             <img src={product.image} alt={product.name} className="" />
                                         </div>
-                                        <div className="down-content p-4 bg-gray-50">
-                                            <p className="font-bold md:text-lg text-xs">{product.name}</p>
-                                            <span className="text-gray-700">{product.price}</span>
+                                        <div className="flex flex-col mt-2">
+                                            <span className="font-poppins text-black md:text-lg text-xs">{product.name}</span>
+                                            <span className="text-gray-700 font-questrial font-bold text-xs sm:text-lg mt-2"><strong>{product.price}</strong></span>
                                         </div>
                                     </div>
                                 </Link>
@@ -144,8 +147,8 @@ const Products = () => {
                                         key={pageNumber}
                                         onClick={() => handlePageChange(pageNumber)}
                                         className={`px-4 py-2 text-sm font-medium ${pageNumber === currentPage
-                                                ? "bg-gray-800 text-white"
-                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                            ? "bg-gray-800 text-white"
+                                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                                             }`}
                                     >
                                         {pageNumber}

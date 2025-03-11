@@ -1,82 +1,151 @@
-import { Link } from "react-router"; // Cambié "react-router" a "react-router-dom"
+import { Link } from "react-router-dom";
 import SideMenu from "./sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearch } from "../context/search";
+import { IoBagHandleOutline, IoSearch } from "react-icons/io5";
+import TopInfo from "./top";
+import { useCategories } from "../context/notifications";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null);
+    const { setOpenSearch } = useSearch();
+    const { products } = useCategories();
+
+    // Agrupar productos por typeProduct y obtener categorías únicas
+    const groupedProducts = products.reduce((acc, product) => {
+        if (!acc[product.typeProduct]) {
+            acc[product.typeProduct] = new Set();
+        }
+        acc[product.typeProduct].add(product.category);
+        return acc;
+    }, {});
+
+    const toggleDropdown = (dropdown) => {
+        setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+    };
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
+    const handleMouseEnter = (dropdown) => {
+        setActiveDropdown(dropdown);
+    };
+
+    const handleMouseLeave = () => {
+        setActiveDropdown(null);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                !event.target.closest(".menu-mobile") &&
+                !event.target.closest(".menu-button")
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener("click", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, [isMenuOpen]);
+
     return (
-        <header className="header-area sticky top-0 bg-white shadow-md z-50">
-            <div className="container mx-auto px-4">
-                <div className="flex justify-between items-center py-4">
-                    {/* Logo */}
-                    <Link to="/" className="logo w-56">
-                        <img
-                            src={require("../images/l3 (2).png")}
-                            alt="Logo"
-                            className="h-auto"
-                        />
+        <header className="fixed w-full z-50">
+            <TopInfo />
+            <nav className="bg-black shadow-md">
+                <div className="flex items-center justify-between px-6 py-4">
+                    <Link to="/" className="text-white text-xl sm:text-3xl font-bold tracking-wide">
+                        Wearit
                     </Link>
 
-                    {/* Menú de navegación */}
-                    <ul className="hidden md:flex items-center space-x-6">
-                        <li>
-                            <a href="#men" className="text-gray-800 hover:text-blue-500">
-                                Hombres
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#women" className="text-gray-800 hover:text-blue-500">
-                                Mujeres
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#kids" className="text-gray-800 hover:text-blue-500">
-                                Niños
-                            </a>
-                        </li>
-                        <li>
-                            <Link
-                                to="/cart"
-                                className="text-gray-800 hover:text-blue-500 flex items-center"
+                    <div
+                        className="hidden lg:flex justify-center mx-auto items-center w-full"
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <ul className="flex space-x-10 font-medium text-white">
+                            {Object.entries(groupedProducts).map(([typeProduct, categories], idx) => (
+                                <li
+                                    key={idx}
+                                    className="relative"
+                                    onMouseEnter={() => handleMouseEnter(typeProduct)}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    <button
+                                        className="text-white text-lg transition"
+                                        onClick={() => toggleDropdown(typeProduct)}
+                                    >
+                                        {typeProduct.toUpperCase()}
+                                    </button>
+                                    {activeDropdown === typeProduct && (
+                                        <div className="absolute left-0 mt-1 bg-white text-black shadow-xl p-4 w-56 z-50">
+                                            {Array.from(categories)
+                                                .sort((a, b) => a.localeCompare(b))
+                                                .map((category, i) => (
+                                                    <div key={i} className="my-4">
+                                                        <Link
+                                                            to={`/shop/${typeProduct}/${category}`}
+                                                            className="text-gray-600 hover:text-gray-700 no-underline font-questrial relative group"
+                                                        >
+                                                            {category.toUpperCase()}
+                                                            <span className="absolute left-0 bottom-[-5px] h-[2px] w-0 bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
+                                                        </Link>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="hidden lg:flex items-center space-x-6">
+                        <button onClick={setOpenSearch} type="button">
+                            <IoSearch className="text-white w-7 h-7 cursor-pointer transition" />
+                        </button>
+                        <Link to={"/cart"}>
+                            <IoBagHandleOutline className="text-white w-7 h-7 cursor-pointer transition" />
+                        </Link>
+                    </div>
+
+                    <div className="flex lg:hidden items-center space-x-4">
+                        <button onClick={setOpenSearch} type="button">
+                            <IoSearch className="text-white text-2xl cursor-pointer hover:text-yellow-400 transition" />
+                        </button>
+                        <Link to={"/cart"}>
+                            <IoBagHandleOutline className="text-white text-2xl cursor-pointer hover:text-yellow-400 transition" />
+                        </Link>
+                        <button
+                            onClick={toggleMenu}
+                            className="text-white focus:outline-none"
+                        >
+                            <svg
+                                className="w-6 h-6"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
+                                <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    className="icon"
-                                >
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
-                                    <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
-                                </svg>
-                            </Link>
-                        </li>
-                    </ul>
-
-                    {/* Botón de menú para móviles */}
-                    <button
-                        type="button"
-                        onClick={toggleMenu}
-                        className="menu-trigger md:hidden text-gray-800 hover:text-blue-500"
-                    >
-                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-menu"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8l16 0" /><path d="M4 16l16 0" /></svg></span>
-                    </button>
+                                    strokeWidth={2}
+                                    d="M4 6h16M4 12h16m-7 6h7"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </nav>
 
-            {/* Menú lateral */}
-            {isOpen && <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} />}
+            {isOpen && <SideMenu setIsOpen={setIsOpen} products={products} toggleDropdown={toggleDropdown} />}
         </header>
     );
 };

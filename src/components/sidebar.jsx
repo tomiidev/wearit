@@ -1,90 +1,104 @@
-import React from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from "react-icons/md";
 
-const SideMenu = ({ isOpen, setIsOpen }) => {
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
+const SideMenu = ({ products, setIsOpen }) => {
+    const [expandedCategory, setExpandedCategory] = useState(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setIsVisible(true);
+    }, []);
+
+    const closeMenu = () => {
+        setIsVisible(false);
+        setTimeout(() => setIsOpen(false), 300); // Esperar la animación antes de desmontar
+    };
+
+    // Agrupar productos por typeProduct y obtener categorías únicas
+    const groupedProducts = products.reduce((acc, product) => {
+        if (!acc[product.typeProduct]) {
+            acc[product.typeProduct] = new Set();
+        }
+        acc[product.typeProduct].add(product.category);
+        return acc;
+    }, {});
+
+    const toggleCategory = (category) => {
+        setExpandedCategory(expandedCategory === category ? null : category);
     };
 
     return (
-        <div>
-            {/* Menú lateral */}
+        <div
+            className={`fixed inset-0 z-50 bg-black bg-opacity-50 flex transition-opacity duration-300 ${
+                isVisible ? "opacity-100" : "opacity-0"
+            }`}
+            onClick={closeMenu}
+        >
+            {/* Contenedor del Menú */}
             <div
-                className={`fixed inset-0 bg-white text-black transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-                    } transition-transform duration-300 ease-in-out z-40`}
+                className={`bg-white w-3/4 md:w-1/2 h-full flex flex-col shadow-lg transform transition-transform duration-300 ${
+                    isVisible ? "translate-x-0" : "-translate-x-full"
+                }`}
+                onClick={(e) => e.stopPropagation()} // Evita que se cierre al hacer clic dentro
             >
-                {/* Cabecera del menú con el botón de cerrar */}
-                <div className="flex justify-between items-center p-4 border-b border-gray-200">
-                    <h2 className="text-lg font-semibold"></h2>
+                {/* Encabezado */}
+                <div className="flex items-center justify-between p-4 border-b border-gray-200">
                     <button
-                        onClick={toggleMenu}
-                        className="text-2xl font-bold text-black hover:text-gray-500"
+                        className="text-gray-600 hover:text-gray-800"
+                        aria-label="Cerrar menú"
+                        onClick={closeMenu}
                     >
-                        ×
+                        ✕
                     </button>
                 </div>
 
-                {/* Contenido del menú */}
-                <div className="p-6">
-                            
-                    <ul className="space-y-6 ">
-                        <li>
-                            <Link
-                                to={"/cart"}
-                                className="block text-lg  font-medium text-black hover:text-blue-500"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="icon text-center mx-auto"
+                {/* Contenido */}
+                <div className="flex-1 overflow-y-auto p-4">
+                    {/* Categorías de Productos */}
+                    <div className="mt-0">
+                        {Object.entries(groupedProducts).map(([typeProduct, categories], index) => (
+                            <div key={index} className="">
+                                <button
+                                    className="w-full text-left flex items-center justify-between font-poppins text-sm font-semibold text-gray-800 py-2 hover:text-gray-600 transition duration-200"
+                                    onClick={() => toggleCategory(typeProduct)}
                                 >
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
-                                    <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
-                                </svg>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={"/"}
-                                className="block text-lg font-medium text-black hover:text-blue-500"
-                            >
-                                Inicio
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={"/products"}
-                                className="block text-lg font-medium text-black hover:text-blue-500"
-                            >
-                                Hombres
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={"/products"}
-                                className="block text-lg font-medium text-black hover:text-blue-500"
-                            >
-                                Mujeres
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={"/products"}
-                                className="block text-lg font-medium text-black hover:text-blue-500"
-                            >
-                                Niños
-                            </Link>
-                        </li>
+                                    {typeProduct.toUpperCase()}
+                                    <span>
+                                        {expandedCategory === typeProduct ? <MdOutlineKeyboardArrowUp /> : <MdOutlineKeyboardArrowDown />}
+                                    </span>
+                                </button>
+                                <div
+                                    className={`transition-all duration-300 ease-in-out ${
+                                        expandedCategory === typeProduct ? "max-h-screen opacity-100" : "max-h-0 overflow-hidden"
+                                    }`}
+                                >
+                                    <ul className="mt-2 space-y-2 pl-4 border-l border-gray-300 bg-gray-100">
+                                        {Array.from(categories)
+                                            .sort((a, b) => a.localeCompare(b))
+                                            .map((category, i) => (
+                                                <li key={i}>
+                                                    <Link
+                                                        to={`/shop/${typeProduct}/${category}`}
+                                                        className="block text-gray-600 hover:text-gray-800 text-sm py-1 transition duration-300"
+                                                        onClick={closeMenu}
+                                                    >
+                                                        {category}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
-                    </ul>
+                {/* Footer */}
+                <div className="p-4 border-t border-gray-200">
+                    <p className="text-center text-sm text-gray-500">
+                        © {new Date().getFullYear()} Ecommerce. Todos los derechos reservados.
+                    </p>
                 </div>
             </div>
         </div>

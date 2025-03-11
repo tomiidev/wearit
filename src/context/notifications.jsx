@@ -1,84 +1,64 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { API_PROD, API_URL } from '../lib/apis';
+import { createContext, useContext, useState, useEffect } from 'react';
+import productsData from '../products.json'; // Asegúrate de que el JSON esté en la carpeta adecuada
 
 const CategoriesContext = createContext();
 
 export function CategoriesProvider({ children }) {
     const [categories, setCategories] = useState([]);
+    const [productTypes, setProductTypes] = useState([]);
     const [products, setProducts] = useState([]);
     const [destacados, setDestacados] = useState([]);
     const [promociones, setPromociones] = useState([]);
-    const [articulos, setArticulos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Reutilizable función de fetch
-    const fetchData = useCallback(async (url, options = {}, onSuccess = () => { }) => {
+    useEffect(() => {
         setLoading(true);
-        setError(null);
         try {
-            const response = await fetch(url, { ...options, headers: { 'Content-Type': 'application/json', ...options.headers } });
-            if (!response.ok) {
-                const errorData = await response.json();
-                setError(errorData.error || 'Error fetching data');
-                return;
-            }
-            const data = await response.json();
-            onSuccess(data.data);
+            // Cargar productos desde el JSON local
+            setProducts(productsData);
+
+            // Extraer categorías únicas
+            const uniqueCategories = [...new Set(productsData.map((product) => product.category))];
+            setCategories(uniqueCategories);
+
+            // Extraer tipos de productos únicos
+            const uniqueProductTypes = [...new Set(productsData.map((product) => product.typeProduct))];
+            setProductTypes(uniqueProductTypes);
+
+            // Simular destacados y promociones (puedes cambiar esta lógica)
+            setDestacados(products.filter(product => product.featured ===true).slice(0, 5));
+            setPromociones(productsData.filter((product, index) => index % 2 === 0)); // Productos pares como promociones
         } catch (err) {
-            setError('Network or server error');
+            setError('Error cargando los datos');
         } finally {
             setLoading(false);
         }
-    }, []);
-
-    useEffect(() => {
-        if (!categories.length) {
-            fetchData(`${API_URL}/get-suppliers`, {}, setCategories);
-        }
-    }, [categories.length, fetchData]);
-
-    useEffect(() => {
-        fetchData(`${API_URL}/get-destacados`, {}, setDestacados);
-    }, [fetchData]);
-
-    useEffect(() => {
-        fetchData(`${API_URL}/get-articles`, {}, setArticulos);
-    }, [fetchData]);
-    useEffect(() => {
-        fetchData(`${API_URL}/get-promotions`, {}, setPromociones);
-    }, [fetchData]);
-
-    const getData = useCallback(
-        (category) => {
-            fetchData(
-                `${API_PROD}/productsbycategory`,
-                { method: 'POST', body: JSON.stringify({ category }) },
-                setProducts
-            );
-        },
-        [fetchData]
-    );
-
-    useEffect(() => {
-        if (!products.length) {
-            fetchData(`${API_PROD}/productsbyproductstype`, {}, setProducts);
-        }
-    }, [products.length, fetchData]);
-
+    }, [products]);
+    const filterProducts = (productType, category) => {
+        return products.filter(
+            (product) =>
+                product.typeProduct === productType && product.category === category
+        );
+    };
+    const filterProductsOnlyByproductType = (productType) => {
+        return products.filter(
+            (product) =>
+                product.typeProduct === productType
+        );
+    };
     return (
         <CategoriesContext.Provider
             value={{
+                filterProducts,
                 categories,
-                getData,
+                filterProductsOnlyByproductType,
+                productTypes,
                 products,
+                destacados,
                 promociones,
                 loading,
-                error,
-                setLoading,
-                destacados,
-                setError,
-                articulos,
+                error
             }}
         >
             {children}
