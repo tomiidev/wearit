@@ -1499,6 +1499,20 @@ Subscribe
 .subscribe ul li span a:hover {
   color: #2a2a2a;
 }
+@layer utilities {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 1s ease-out;
+  }
+}
 
 
 /* 

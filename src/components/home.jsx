@@ -9,6 +9,7 @@ import WpButton from "./wp"
 import SearchBar from "./search_bar"
 import ProductGrid from "./product"
 import products from "../products.json"
+import Subscribe from "./suscribe"
 const Home = () => {
     const isMobile = useIsMobile();
     const isOnPromotion = true; // Variable para determinar si el producto está en promoción
@@ -187,12 +188,12 @@ const Home = () => {
                                     onSlideChange={() => console.log("slide change")}
                                     onSwiper={(swiper) => console.log(swiper)}
                                 >
-                                  {products.filter(p => p.typeProduct === "Hombre").map((d, index) => (
+                                    {products.filter(p => p.typeProduct === "Hombre").map((d, index) => (
                                         <SwiperSlide key={index}>
                                             <ProductGrid {...d} />
                                         </SwiperSlide>
                                     ))}
-                                   
+
                                 </Swiper>
                             </div>
                         </div>
@@ -254,7 +255,7 @@ const Home = () => {
                                     onSlideChange={() => console.log("slide change")}
                                     onSwiper={(swiper) => console.log(swiper)}
                                 >
-                                    {products.filter(p => p.typeProduct === "Niño").map((d, index) => (
+                                    {products.filter(p => p.typeProduct === "Nino").map((d, index) => (
                                         <SwiperSlide key={index}>
                                             <ProductGrid {...d} />
                                         </SwiperSlide>
@@ -316,10 +317,7 @@ const Home = () => {
 
 
 
-            <div class="subscribe">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8">
+            {/*        <div class="col-lg-8">
                             <div class="section-heading">
                                 <h2>Suscribiendote a la newsletter gana un 30% Off</h2>
                                 <span>Recibí la última información sobre moda y alertas de articulos.</span>
@@ -343,29 +341,11 @@ const Home = () => {
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="row justify-center mx-auto text-center">
-                                <div class="col-6">
-                                    <ul>
+                        </div> */}
 
-                                        <li>Ubicación<br /><span>Uruguay</span></li>
-                                        <li>Teléfono<br /><span>010-020-0340</span></li>
+            <Subscribe />
 
-                                    </ul>
-                                </div>
-                                <div class="col-6">
-                                    <ul>
-                                        <li>Horarios:<br /><span>Lun a Vie, 07:30 - 21:30</span></li>
-                                        <li>Email<br /><span>info@company.com</span></li>
-                                        <li>Redes sociales<br /><span><a href="/">Facebook</a>, <a href="/">Instagram</a>, <a href="/">Behance</a>, <a href="/">Linkedin</a></span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <Footer />
             <WpButton />
         </>
