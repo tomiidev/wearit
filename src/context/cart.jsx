@@ -96,10 +96,10 @@ export function CartProvider({ children }) {
         setCartItems((prevItems) =>
             prevItems.map((producto) =>
                 producto.id === product.id &&
-                    producto.color === product.color &&
-                    producto.peso === product.peso &&
-                    producto.precio === product.precio &&
-                    producto.imagen === product.imagen
+                     producto.color === product.color && 
+                   /*  producto.peso === product.peso && */
+                    producto.precio  === product.precio/*  &&
+                    producto.imagen === product.imagen */
                     ? { ...producto, cantidad }
                     : producto
             )
