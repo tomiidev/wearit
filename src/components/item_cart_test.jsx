@@ -1,6 +1,7 @@
 import { useState } from "react";
 import QuantitySelector from "./quantity_selector";
 import { useCart } from "../context/cart";
+import QuantitySelectorMobile from "./selector__mobile";
 
 const ItemCartTest = ({ item, cantidad, removeItemFromCart, product }) => {
     // Función para manejar el cambio de cantidad
@@ -18,7 +19,7 @@ const ItemCartTest = ({ item, cantidad, removeItemFromCart, product }) => {
                     className="h-32 w-32 rounded img-fluid border p-1"
                 />
                 <div className="ml-4 flex-1 text-left sm:w-full">
-                    <h3 className="text-sm font-medium font-poppins text-gray-900 dark:text-white">
+                    <h3 className="text-sm font-medium font-poppins text-gray-900">
                         {item.titulo}
                     </h3>
                     <p className="text-xs font-questrial text-gray-500 dark:text-gray-400">
@@ -27,8 +28,8 @@ const ItemCartTest = ({ item, cantidad, removeItemFromCart, product }) => {
                     {item.color && <p className="text-xs font-questrial text-gray-500 dark:text-gray-400">
                         <strong>Color: </strong>{item.color}
                     </p>}
-                    {item.peso && <p className="text-xs font-questrial text-gray-500 dark:text-gray-400">
-                        <strong>Peso: </strong>{item.peso}
+                    {item.tamaño && <p className="text-xs font-questrial text-gray-500 dark:text-gray-400">
+                        <strong>Talle: </strong>{item.tamaño}
                     </p>}
                 </div>
             </div>
@@ -38,7 +39,7 @@ const ItemCartTest = ({ item, cantidad, removeItemFromCart, product }) => {
                 {/* Contenedor para el contador */}
                 <div className="flex items-center justify-center space-x-2">
 
-                    <QuantitySelector q={cantidad} setQ={setQ} cambiarCantidad={cambiarCantidad} product={product} />
+                    <QuantitySelectorMobile q={cantidad} setQ={setQ} cambiarCantidad={cambiarCantidad} product={product} />
                 </div>
 
                 {/* Contenedor para el precio y el botón de eliminar */}

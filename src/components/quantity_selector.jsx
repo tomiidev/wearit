@@ -1,6 +1,6 @@
 import React from "react";
 
-const QuantitySelector = ({ q, setQ, minQuantity = 1, maxQuantity = 10 }) => {
+const QuantitySelector = ({ q, setQ, minQuantity = 1, maxQuantity = 10, cambiarCantidad }) => {
 
     const handleQuantityChange = (e) => {
         const newQuantity = parseInt(e.target.value, 10);

@@ -23,7 +23,7 @@ const CartTest = () => {
 
 
     const [subtotal, setSubTotal] = useState(cartItems.reduce(
-        (acc, product) => acc + product.precio * (product.cantidad || 1),
+        (acc, product) => acc + product.price * (product.cantidad || 1),
         0
     ))
     // Función para recalcular el total (con el descuento aplicado sobre el total)
