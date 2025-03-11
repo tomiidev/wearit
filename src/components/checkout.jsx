@@ -314,12 +314,12 @@ const Checkout = () => {
 
                                     <div
                                         key={method.value}
-                                        className={`w-full flex items-center mb-4  p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 
-                                          ${paymentMethod === method.value ? 'border-red-600 ring-2 ring-red-500' : 'border-gray-300'}
+                                        className={`w-full flex items-center mb-4  p-3 sm:p-4 border-2  border-gray-800 ring-2 ring-gray-30 rounded-sm cursor-pointer transition-all duration-300 
+                                          ${paymentMethod === method.value ? 'border-red-600 ring-2 ring-gray-500' : 'border-gray-300'}
                                          hover:border-gray-500 hover:ring-1 hover:ring-gray-300 focus:outline-none`}
                                         onClick={() => setPaymentMethod(method.value)}
                                     >
-                                        <div className={`w-6 h-6 border-2 ${paymentMethod === method.value ? 'border-red-600 bg-red-500' : 'border-gray-300'} 
+                                        <div className={`w-6 h-6 border-2 ${paymentMethod === method.value ? 'border-gray-800 bg-black' : 'border-gray-300'} 
                                              rounded-full mr-4 flex items-center justify-center transition-colors duration-300`}>
                                             {paymentMethod === method.value && <div className="w-4 h-4 bg-white rounded-full"></div>}
                                         </div>

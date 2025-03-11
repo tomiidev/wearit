@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SubmitButton = ({ cartItems, handleSubmit, isLoading, orderData }) => {
-    const isDisabled = cartItems.length === 0 /* || isLoading === true || orderData.paymentMethod === "" */;
+    const isDisabled = true
   
     return (
         <button
@@ -9,7 +9,7 @@ const SubmitButton = ({ cartItems, handleSubmit, isLoading, orderData }) => {
             type="button"
             className={`flex items-center justify-center gap-2 w-full p-2 rounded-sm transition-all duration-200 ${isDisabled
                 ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-red-600 hover:bg-red-700 cursor-pointer'
+                : 'bg-black  cursor-pointer'
                 }`}
             onClick={handleSubmit}
         >
