@@ -70,7 +70,7 @@ const Header = () => {
                         className="hidden lg:flex justify-center mx-auto items-center w-full"
                         onMouseLeave={handleMouseLeave}
                     >
-                        <ul className="flex space-x-10 font-medium text-white">
+                        <ul className="flex space-x-10 font-medium text-black">
                             {Object.entries(groupedProducts).map(([typeProduct, categories], idx) => (
                                 <li
                                     key={idx}
@@ -108,16 +108,16 @@ const Header = () => {
 
                     <div className="hidden lg:flex items-center space-x-6">
                         <button onClick={setOpenSearch} type="button">
-                            <IoSearch className="text-white w-7 h-7 cursor-pointer transition" />
+                            <IoSearch className="text-white w-6 h-7 cursor-pointer transition" />
                         </button>
                         <Link to={"/cart"}>
-                            <IoBagHandleOutline className="text-white w-7 h-7 cursor-pointer transition" />
+                            <IoBagHandleOutline className="text-white w-6 h-7 cursor-pointer transition" />
                         </Link>
                     </div>
 
                     <div className="flex lg:hidden items-center space-x-4">
                         <button onClick={setOpenSearch} type="button">
-                            <IoSearch className="text-white text-2xl cursor-pointer hover:text-yellow-400 transition" />
+                            <IoSearch wi className="text-white text-2xl cursor-pointer hover:text-yellow-400 transition" />
                         </button>
                         <Link to={"/cart"}>
                             <IoBagHandleOutline className="text-white text-2xl cursor-pointer hover:text-yellow-400 transition" />

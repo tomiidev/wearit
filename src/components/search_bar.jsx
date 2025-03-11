@@ -4,6 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { Transition } from "@headlessui/react";
 import { API_URL } from "../lib/apis";
 import { useNavigate } from "react-router-dom";
+import products from '../products.json'; // Asegúrate de que el JSON esté en la carpeta adecuada
 
 const SearchBar = () => {
     const { openSearch, setOpenSearch } = useSearch();
@@ -27,33 +28,43 @@ const SearchBar = () => {
             setOpenSearch(false);
         }
     };
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
-    const fetchSuggestions = async (query) => {
-        if (query.length < 2) {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300); // Ajusta el tiempo de retraso (300 ms en este caso)
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
+
+    useEffect(() => {
+        if (debouncedSearchTerm.trim() === "") {
             setSuggestions([]);
-            return;
+        } else {
+            setSuggestions(
+                products.filter(p =>
+                    p.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+                )
+            );
         }
-
-        try {
-            const response = await fetch(`${API_URL}/registersearch?query=${encodeURIComponent(query)}`);
-            if (!response.ok) {
-                throw new Error(`Error en el servidor: ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            setSuggestions(data.data); // Supone que el endpoint devuelve un array de sugerencias
-
-        } catch (error) {
-            console.error("Error al obtener sugerencias:", error);
-            setSuggestions([]);
-        }
-    };
+    }, [debouncedSearchTerm]);
 
     const handleChange = (event) => {
         const query = event.target.value;
         setSearchTerm(query);
-        fetchSuggestions(query); // Obtener sugerencias al cambiar el input
+
+        if (query.trim() === "") {
+            setSuggestions([]); // Si no hay texto en la búsqueda, limpiar las sugerencias
+        } else {
+            setSuggestions(
+                products.filter(p =>
+                    p.name.toLowerCase().includes(query.toLowerCase()) // Búsqueda parcial
+                )
+            );
+        }
     };
+    console.log(suggestions)
 
     const stopPropagation = (event) => {
         event.stopPropagation();
@@ -66,13 +77,6 @@ const SearchBar = () => {
 
         return { productoTipoPars, categoriaPars };
     }
-    /*     const handleSuggestionClick = (suggestion) => {
-            setSearchTerm(suggestion._id); // Asigna el título seleccionado como valor de búsqueda
-            setSuggestions([]); // Limpia las sugerencias después de seleccionar una
-        
-        }; */
-
-    // Función para limpiar las rutas y parámetros
 
     return (
         <div onClick={handleClickAway} style={{ position: "relative" }}>
@@ -126,7 +130,7 @@ const SearchBar = () => {
                                 width: "100%",
                                 backgroundColor: "white",
                                 border: "1px solid #ccc",
-                                borderRadius: "4px",
+                               
                                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                                 zIndex: 100,
                                 listStyle: "none",
@@ -135,17 +139,17 @@ const SearchBar = () => {
                             }}
                         >
                             {suggestions.map((suggestion, index) => {
-                                const { productoTipoPars, categoriaPars } = parsear(suggestion.productoTipo, suggestion.categoria);
+                                const { productoTipoPars, categoriaPars } = parsear(suggestion.typeProduct, suggestion.category);
 
                                 // Verifica si el producto tiene variantes
-                                const imagen = suggestion.productoConVariantes === "no"
-                                    ? suggestion.variantes[0]?.imagenes[0] // Toma la primera imagen de la primera variante
-                                    : suggestion.imagesAdded[0]; // Si no tiene variantes, toma la imagen principal
+                                const imagen = suggestion.variants > 0
+                                    ? suggestion.variants[0]?.image // Toma la primera imagen de la primera variante
+                                    : suggestion.image // Si no tiene variantes, toma la imagen principal
 
                                 return (
                                     <li
                                         key={index}
-                                        onClick={() => nv(`/shop/${productoTipoPars}/${categoriaPars}/${suggestion.titulo}`)} //}
+                                        onClick={() => nv(`/shop/${productoTipoPars}/${categoriaPars}/${suggestion.name}`)} //}
                                         className="py-2 px-5 border-b flex items-center text-black cursor-pointer text-left hover:bg-gray-200 gap-2 font-questrial"
                                         onMouseEnter={(e) => (e.target.style.backgroundColor = "#f0f0f0")}
                                         onMouseLeave={(e) => (e.target.style.backgroundColor = "#fff")}
@@ -153,12 +157,12 @@ const SearchBar = () => {
                                         {imagen && (
                                             <img
                                                 className="w-12 h-12 img-fluid"
-                                                src={`https://productosvet.s3.us-east-1.amazonaws.com/${productoTipoPars}/${categoriaPars}/${imagen}`}
-                                                alt={suggestion.titulo.toUpperCase()}
+                                                src={suggestion?.image}
+                                                alt={suggestion?.name}
                                             /* style={{ width: '50px', height: '50px', objectFit: 'cover' }} */
                                             />
                                         )}
-                                        {suggestion.titulo.toUpperCase()}
+                                        {suggestion.name.toUpperCase()}
                                     </li>
                                 );
                             })}
