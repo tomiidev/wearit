@@ -466,13 +466,13 @@ const ProductIDV2 = () => {
                                     <p className="text-black"><strong>Compartí este producto en tus redes sociales</strong></p>
                                     <div className="flex gap-2">
 
-                                        <WhatsappShareButton title={product?.descripcion} url={`https://ecommerce-gabriela.vercel.app/shop/${productoTipo}/${categoria}/${productTitle}`}>
+                                        <WhatsappShareButton title={product?.descripcion} url={`https://wearit-silk.vercel.app/shop/${productoTipo}/${categoria}/${productTitle}`}>
                                             <button className="bg-green-500 text-white font-bold p-2 rounded-full hover:bg-green-600 transition-colors">
                                                 <IoLogoWhatsapp />
                                             </button>
                                         </WhatsappShareButton>
 
-                                        <FacebookShareButton title={product?.descripcion} url={`https://ecommerce-gabriela.vercel.app/shop/${productoTipo}/${categoria}/${productTitle}`}>
+                                        <FacebookShareButton title={product?.descripcion} url={`https://wearit-silk.vercel.app/shop/${productoTipo}/${categoria}/${productTitle}`}>
                                             <button className="bg-blue-500 text-white font-bold p-2 rounded-full hover:bg-blue-600 transition-colors">
                                                 <IoLogoFacebook />
                                             </button>
