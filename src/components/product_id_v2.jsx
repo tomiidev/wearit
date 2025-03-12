@@ -339,16 +339,16 @@ const ProductIDV2 = () => {
                                     </h3>
                                     <hr />
                                     {
-                                        product?.variantes > 0 ?
+                                        product?.variants > 0 ?
                                             <>
                                                 <p className="font-questrial text-red-500">
-                                                    ¡QUEDAN {stock} DISPONIBLES!
+                                                    ¡QUEDAN {stock || 1} DISPONIBLES!
                                                 </p>
                                                 <hr />
                                             </>
                                             : <>
                                                 <p className="font-questrial text-red-500">
-                                                    ¡QUEDAN {product?.stock} DISPONIBLES!
+                                                    ¡QUEDAN {product?.stock || 1} DISPONIBLES!
                                                 </p>
                                                 <hr />
                                             </>
