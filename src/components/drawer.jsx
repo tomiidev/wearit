@@ -13,8 +13,8 @@ export function CartDrawer({
   showCouponInput,
   setShowCouponInput,
 }) {
-  const [open, setOpen] = React.useState(true);
-
+  /*   const [open, setOpen] = React.useState(true);
+   */
   // Mostrar el input del cupón
   const handleShowCouponInput = () => setShowCouponInput(true);
 
@@ -26,9 +26,7 @@ export function CartDrawer({
       {/* Drawer Component */}
       <div
         id="drawer-form"
-        className={`fixed border-t border-gray-300 bottom-0 left-0 z-40 w-full p-4 overflow-y-auto transition-transform duration-300 ease-in-out ${
-          open ? "translate-y-0" : "translate-y-full"
-        } bg-white dark:bg-gray-800`}
+        className={`fixed border-t border-gray-300 bottom-0 left-0 z-40 w-full p-4 overflow-y-auto transition-transform duration-300 ease-in-out bg-white dark:bg-gray-800`}
         tabIndex="-1"
         aria-labelledby="drawer-form-label"
       >

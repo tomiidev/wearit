@@ -4,6 +4,7 @@ import QuantitySelectorMobile from "./selector__mobile";
 
 const ItemCartTest = ({ item, cantidad, removeItemFromCart, product }) => {
   // Función para manejar el cambio de cantidad
+  // eslint-disable-next-line no-unused-vars
   const [q, setQ] = useState(1);
 
   const { cambiarCantidad } = useCart();

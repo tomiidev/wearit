@@ -27,7 +27,7 @@ const ProductIDV2 = () => {
   ];
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
-
+  // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -53,6 +53,7 @@ const ProductIDV2 = () => {
     // Cambiar imagen según el color seleccionado
     setImgPrincipalv(img);
   };
+  // eslint-disable-next-line no-unused-vars
   const cambiarImagenPrincipal = (img) => {
     // Cambiar imagen según el color seleccionado
     setImgPrincipal(img);
@@ -63,7 +64,9 @@ const ProductIDV2 = () => {
   // Condicionar slidesPerView según el tamaño de la pantalla
   const slidesToShow = isMobile ? 1 : isTablet ? 2 : 4;
   const [q, setQ] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [stock, setStock] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const { productTitle, category, subCategory } = useParams();
 
   const [product, setProduct] = useState(null);
@@ -77,6 +80,7 @@ const ProductIDV2 = () => {
     // Activa la animación después de que el componente se monta
     setTimeout(() => setIsVisible(true), 100); // Retraso opcional para suavidad
   }, []);
+  // eslint-disable-next-line no-unused-vars
   const [selectedImage, setSelectedImage] = useState(""); // Imagen seleccionada
   const [addingToCart, setAddingToCart] = useState(false); // Imagen seleccionada
   const [price, setPrice] = useState(0); // Imagen seleccionada
@@ -126,7 +130,9 @@ const ProductIDV2 = () => {
       setPrice(product.price);
     }
   };
+  // eslint-disable-next-line no-unused-vars
   const [imgPrincipal, setImgPrincipal] = useState(product?.imagesAdded?.[0]); // Estado para manejar la carga
+  // eslint-disable-next-line no-unused-vars
   const [imgPrincipalv, setImgPrincipalv] = useState(
     product?.variantes?.imagenes?.[0],
   );

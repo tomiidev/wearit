@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useCategories } from "../context/notifications";
 import { useLocation, NavLink } from "react-router-dom";
 import ProductGrid from "./product";
