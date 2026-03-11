@@ -1,23 +1,22 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import { API_URL } from '../lib/apis';
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 // Proveedor del contexto
 export function CartProvider({ children }) {
-    const [cartItems, setCartItems] = useState([]);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    /*     const [discountCode, setDiscountCode] = useState(''); */
-    /*     const [discount, setDiscount] = useState(0); // Porcentaje de descuento (ej. 10 para 10%)
-     */
-    // Lista de códigos de descuento válidos (esto podría venir de una base de datos)
-    /*     const validCodes = {
+  const [cartItems, setCartItems] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  /*     const [discountCode, setDiscountCode] = useState(''); */
+  /*     const [discount, setDiscount] = useState(0); // Porcentaje de descuento (ej. 10 para 10%)
+   */
+  // Lista de códigos de descuento válidos (esto podría venir de una base de datos)
+  /*     const validCodes = {
             'DESCUENTO10': 10,
             'OFERTA20': 20,
         }; */
-    // Cargar carrito desde localStorage cuando se monta el componente
-    /*     useEffect(() => {
+  // Cargar carrito desde localStorage cuando se monta el componente
+  /*     useEffect(() => {
     
             const storedCartItems = localStorage.getItem(`cartItems`);
             if (storedCartItems) {
@@ -26,49 +25,45 @@ export function CartProvider({ children }) {
         }, []);
     
      */
-    useEffect(() => {
-        try {
-            const storedCartItems = localStorage.getItem(`cartItems`);
-            setCartItems(storedCartItems ? JSON.parse(storedCartItems) : []);
-        } catch (error) {
-            console.error("Error al cargar el carrito desde localStorage:", error);
-            setCartItems([]);
-        }
-    }, []);
+  useEffect(() => {
+    try {
+      const storedCartItems = localStorage.getItem(`cartItems`);
+      setCartItems(storedCartItems ? JSON.parse(storedCartItems) : []);
+    } catch (error) {
+      console.error("Error al cargar el carrito desde localStorage:", error);
+      setCartItems([]);
+    }
+  }, []);
 
+  useEffect(() => {
+    // Guardar carrito en localStorage cuando cartItems cambia y el usuario está autenticado
 
+    localStorage.setItem(`cartItems`, JSON.stringify(cartItems));
+  }, [cartItems]);
 
+  const addItemToCart = (item) => {
+    // Verificar si el producto ya existe en el carrito (incluyendo sus variantes)
+    const productoExistente = cartItems.find(
+      (producto) =>
+        producto.id === item.id &&
+        producto.color === item.color &&
+        producto.peso === item.peso &&
+        producto.precio === item.precio &&
+        producto.imagen === item.imagen,
+    );
 
-
-    useEffect(() => {
-        // Guardar carrito en localStorage cuando cartItems cambia y el usuario está autenticado
-
-        localStorage.setItem(`cartItems`, JSON.stringify(cartItems));
-
-    }, [cartItems]);
-
-    const addItemToCart = (item) => {
-        // Verificar si el producto ya existe en el carrito (incluyendo sus variantes)
-        const productoExistente = cartItems.find(
-            (producto) => producto.id === item.id &&
-                producto.color === item.color &&
-                producto.peso === item.peso &&
-                producto.precio === item.precio &&
-                producto.imagen === item.imagen
-        );
-
-        if (productoExistente) {
-            // Si existe, actualizar su cantidad
-            setCartItems((prevItems) =>
-                prevItems.map((producto) =>
-                    producto.id === item.id &&
-                        producto.color === item.color &&
-                        producto.peso === item.peso
-                        ? { ...producto, cantidad: producto.cantidad + item.cantidad }
-                        : producto
-                )
-            );
-            /*  setCartItems(
+    if (productoExistente) {
+      // Si existe, actualizar su cantidad
+      setCartItems((prevItems) =>
+        prevItems.map((producto) =>
+          producto.id === item.id &&
+          producto.color === item.color &&
+          producto.peso === item.peso
+            ? { ...producto, cantidad: producto.cantidad + item.cantidad }
+            : producto,
+        ),
+      );
+      /*  setCartItems(
                  cartItems.map((producto) =>
                      producto.id === item.id &&
                          producto.color === item.color &&
@@ -77,56 +72,51 @@ export function CartProvider({ children }) {
                          : producto
                  )
              ); */
-        } else {
-            // Si no existe, agregarlo como un nuevo producto
-            setCartItems((prevItems) => [
-                ...prevItems,
-                { ...item },
-            ]);
-    
-        }
-    };
+    } else {
+      // Si no existe, agregarlo como un nuevo producto
+      setCartItems((prevItems) => [...prevItems, { ...item }]);
+    }
+  };
 
-    const cambiarCantidad = (product, cantidad) => {
-        if (cantidad < 1) {
-            // No permitir cantidad menor que 1
-            return;
-        }
+  const cambiarCantidad = (product, cantidad) => {
+    if (cantidad < 1) {
+      // No permitir cantidad menor que 1
+      return;
+    }
 
-        setCartItems((prevItems) =>
-            prevItems.map((producto) =>
-                producto.id === product.id &&
-                     producto.color === product.color && 
-                   /*  producto.peso === product.peso && */
-                    producto.precio  === product.precio/*  &&
+    setCartItems((prevItems) =>
+      prevItems.map((producto) =>
+        producto.id === product.id &&
+        producto.color === product.color &&
+        /*  producto.peso === product.peso && */
+        producto.precio === product.precio /*  &&
                     producto.imagen === product.imagen */
-                    ? { ...producto, cantidad }
-                    : producto
-            )
-        );
-    };
+          ? { ...producto, cantidad }
+          : producto,
+      ),
+    );
+  };
 
-    const removeItemFromCart = (itemToRemove) => {
-        setCartItems((prevItems) => {
-            const updatedItems = prevItems.filter(
-                (item) =>
-                    item.id !== itemToRemove.id ||
-                    item.color !== itemToRemove.color ||
-                    item.peso !== itemToRemove.peso ||
-                    item.precio !== itemToRemove.precio ||
-                    item.imagen !== itemToRemove.imagen
-            );
+  const removeItemFromCart = (itemToRemove) => {
+    setCartItems((prevItems) => {
+      const updatedItems = prevItems.filter(
+        (item) =>
+          item.id !== itemToRemove.id ||
+          item.color !== itemToRemove.color ||
+          item.peso !== itemToRemove.peso ||
+          item.precio !== itemToRemove.precio ||
+          item.imagen !== itemToRemove.imagen,
+      );
 
-            // Guardar el nuevo carrito actualizado en localStorage
-            localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+      // Guardar el nuevo carrito actualizado en localStorage
+      localStorage.setItem("cartItems", JSON.stringify(updatedItems));
 
-            return updatedItems;
-        });
-    };
+      return updatedItems;
+    });
+  };
 
-
-    // Eliminar un artículo del carrito
-    /* const removeItemFromCart = (itemId) => {
+  // Eliminar un artículo del carrito
+  /* const removeItemFromCart = (itemId) => {
         // Actualizar el estado y eliminar el ítem
         setCartItems((prevItems) => {
             const updatedItems = prevItems.filter(item => item.id !== itemId);
@@ -138,14 +128,12 @@ export function CartProvider({ children }) {
         });
     }; */
 
-    // Vaciar el carrito
-    const clearCart = () => {
-        setCartItems([]);
-    };
+  // Vaciar el carrito
+  const clearCart = () => {
+    setCartItems([]);
+  };
 
-
-
-    /*     const applyDiscount = () => {
+  /*     const applyDiscount = () => {
             if (validCodes[discountCode]) {
                 setDiscount(validCodes[discountCode]);
             } else {
@@ -161,32 +149,28 @@ export function CartProvider({ children }) {
         const totalMonto = subtotal + shippingCost - discountAmount;
      */
 
-    // Contexto de valor
-    const value = {
-        /*  applyDisc *//* ount, */
-        /*  subtotal, */
-        /*   discountCode, */
-        /*     discountAmount, */
-        /*  discount, */
-        /*   setDiscountCode, */
-        /*   totalMonto,
+  // Contexto de valor
+  const value = {
+    /*  applyDisc */ /* ount, */
+    /*  subtotal, */
+    /*   discountCode, */
+    /*     discountAmount, */
+    /*  discount, */
+    /*   setDiscountCode, */
+    /*   totalMonto,
           shippingCost, */
-        cambiarCantidad,
-        isAuthenticated,
-        cartItems,
-        addItemToCart,
-        removeItemFromCart,
-        clearCart,
-    };
+    cambiarCantidad,
+    isAuthenticated,
+    cartItems,
+    addItemToCart,
+    removeItemFromCart,
+    clearCart,
+  };
 
-    return (
-        <CartContext.Provider value={value}>
-            {children}
-        </CartContext.Provider>
-    );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 // Hook para usar el contexto
 export function useCart() {
-    return useContext(CartContext);
+  return useContext(CartContext);
 }
