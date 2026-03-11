@@ -1,7 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
-export function FiltersDrawer({ setIsAccordionOpen, isAccordionOpen, open, setOpen, handlePriceChange, clearFilters, applyFilters }) {
+export function FiltersDrawer({
+  setIsAccordionOpen,
+  isAccordionOpen,
+  open,
+  setOpen,
+  handlePriceChange,
+  clearFilters,
+  applyFilters,
+}) {
   // Cerrar el Drawer
   const closeDrawer = () => setOpen(false);
 
@@ -13,7 +19,9 @@ export function FiltersDrawer({ setIsAccordionOpen, isAccordionOpen, open, setOp
       >
         {/* Contenido del Drawer */}
         <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-sm sm:text-lg font-semibold text-gray-800">Filtros</h2>
+          <h2 className="text-sm sm:text-lg font-semibold text-gray-800">
+            Filtros
+          </h2>
           <button
             onClick={closeDrawer}
             className="text-gray-500 hover:text-gray-700 transition duration-300"
@@ -24,14 +32,17 @@ export function FiltersDrawer({ setIsAccordionOpen, isAccordionOpen, open, setOp
 
         <div className="flex-1 overflow-y-auto">
           <div className="shop__sidebar__accordion">
-            <div className="accordion border-b border-gray-300" id="accordionExample">
+            <div
+              className="accordion border-b border-gray-300"
+              id="accordionExample"
+            >
               <div className="card p-4">
                 <div
                   className="card-heading flex items-center justify-between cursor-pointer"
                   onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                 >
                   <span className="text-black font-light  text-left font-poppins">
-                   PRECIO
+                    PRECIO
                   </span>
                   {/* Flecha que rota dependiendo del estado */}
                   <svg
@@ -41,14 +52,20 @@ export function FiltersDrawer({ setIsAccordionOpen, isAccordionOpen, open, setOp
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
 
                 {/* Contenido del acordeón con transición */}
                 <div
-                  className={`overflow-hidden transition-all duration-500 ${isAccordionOpen ? "max-h-screen" : "max-h-0"
-                    }`}
+                  className={`overflow-hidden transition-all duration-500 ${
+                    isAccordionOpen ? "max-h-screen" : "max-h-0"
+                  }`}
                 >
                   <div className="card-body">
                     <div className="shop__sidebar__price">
@@ -100,7 +117,7 @@ export function FiltersDrawer({ setIsAccordionOpen, isAccordionOpen, open, setOp
         </div>
 
         {/* Botones en la parte inferior de la pantalla */}
-       {/*  <div className="p-2 fixed bottom-4 left-0 w-80 bg-white flex justify-between gap-2">
+        {/*  <div className="p-2 fixed bottom-4 left-0 w-80 bg-white flex justify-between gap-2">
           <button
             onClick={clearFilters}
             className="w-1/2 bg-transaprent boder border-1 border-gray-500 text-gray-700 p-3 text-sm rounded-sm hover:bg-gray-300 transition duration-2000"

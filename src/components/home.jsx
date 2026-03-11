@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Header from "./header";
 import { Link } from "react-router";
 import Footer from "./footer";
-import TopInfo from "./top";
 import useIsMobile from "./ismobile";
 import WpButton from "./wp";
 import SearchBar from "./search_bar";
@@ -11,8 +10,8 @@ import products from "../products.json";
 import Subscribe from "./suscribe";
 const Home = () => {
   const isMobile = useIsMobile();
-  const isOnPromotion = true; // Variable para determinar si el producto está en promoción
-  const isDestacado = true; // Variable para determinar si el producto está en promoción
+  /*   const isOnPromotion = true; // Variable para determinar si el producto está en promoción
+  const isDestacado = true; // Variable para determinar si el producto está en promoción */
 
   return (
     <>

@@ -1,4 +1,3 @@
-import QuantitySelector from "./quantity_selector";
 import QuantitySelectorMobile from "./selector__mobile";
 
 const AddCartMobileComponent = ({ q, setQ, addToCart, addingToCart }) => {

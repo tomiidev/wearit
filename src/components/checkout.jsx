@@ -11,7 +11,7 @@ const Checkout = () => {
   const { state } = useLocation();
   const { cartItems, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [sandbox_init_point, setSandbox_init_point] = useState("");
+  /*  const [sandbox_init_point, setSandbox_init_point] = useState(""); */
   const [deliveryOption, setDeliveryOption] = useState("envio"); // Estado para envío/retiro
   const [isLoading, setIsLoading] = useState(false); // Nuevo estado de carga
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,14 +76,14 @@ const Checkout = () => {
     e.preventDefault();
     console.log(orderData);
     setIsLoading(true); // Activar estado de carga
-    const payload = {
+    /* const payload = {
       ...orderData,
       paymentMethod: paymentMethod,
       items: cartItems,
       totalAmount: state.totalMonto,
       subtotal: state.subtotal,
       discountAmount: state.discount,
-    };
+    }; */
     if (!paymentMethod) {
       toast.error(
         "Por favor, selecciona un método de pago antes de continuar.",
@@ -358,7 +358,7 @@ const Checkout = () => {
                   <strong>¡IMPORTANTE!</strong>- Al hacer click en el "¡LISTO!"
                   tu compra quedará registrada en el sistema.
                 </p>
-                {sandbox_init_point && (
+                {/* {sandbox_init_point && (
                   <button
                     disabled={sandbox_init_point === ""}
                     type="button"
@@ -366,7 +366,7 @@ const Checkout = () => {
                   >
                     Ir a Mercado Pago
                   </button>
-                )}
+                )} */}
               </div>
             </div>
           </div>

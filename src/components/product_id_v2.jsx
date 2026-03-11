@@ -1,13 +1,12 @@
 import Footer from "./footer";
 import { useCart } from "../context/cart";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QuantitySelector from "./quantity_selector";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "./search_bar";
 import ProductGrid from "./product";
 import "react-multi-carousel/lib/styles.css";
-import { API_PROD, API_URL } from "../lib/apis";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useMediaQuery } from "react-responsive";
 import { useCategories } from "../context/notifications";

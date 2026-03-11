@@ -1,5 +1,4 @@
 import React from "react";
-import { IoMdCheckmark } from "react-icons/io";
 export function CartDrawer({
   subtotal,
   discountAmount,
@@ -22,15 +21,14 @@ export function CartDrawer({
   // Ocultar el input del cupón
   const handleHideCouponInput = () => setShowCouponInput(false);
 
-
   return (
     <React.Fragment>
-
       {/* Drawer Component */}
       <div
         id="drawer-form"
-        className={`fixed border-t border-gray-300 bottom-0 left-0 z-40 w-full p-4 overflow-y-auto transition-transform duration-300 ease-in-out ${open ? "translate-y-0" : "translate-y-full"
-          } bg-white dark:bg-gray-800`}
+        className={`fixed border-t border-gray-300 bottom-0 left-0 z-40 w-full p-4 overflow-y-auto transition-transform duration-300 ease-in-out ${
+          open ? "translate-y-0" : "translate-y-full"
+        } bg-white dark:bg-gray-800`}
         tabIndex="-1"
         aria-labelledby="drawer-form-label"
       >
@@ -68,28 +66,26 @@ export function CartDrawer({
               className="flex items-center text-gray-400 font-questrial hover:text-gray-600 transition"
             >
               <span className="text-xs">
-                {
-                  isDiscountApplied
-                    ? "Agregado"
-                    : "Agregar cupón"
-                }
+                {isDiscountApplied ? "Agregado" : "Agregar cupón"}
               </span>
-              {
-                isDiscountApplied ?""
-                   :<svg
-                   xmlns="http://www.w3.org/2000/svg"
-                   className="h-4 w-4 ml-2"
-                   fill="none"
-                   viewBox="0 0 24 24"
-                   stroke="currentColor"
-                   strokeWidth={2}
-                 >
-                   <path
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     d="M9 5l7 7-7 7"
-                   />
-                 </svg>}
+              {isDiscountApplied ? (
+                ""
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              )}
             </button>
           </div>
         ) : (
@@ -123,12 +119,20 @@ export function CartDrawer({
 
         <div className=" text-sm text-gray-500 dark:text-gray-400 gap-2 mt-3 border-t pt-2">
           <div className="flex justify-between">
-            <span className="text-left text-xs font-poppins text-black"><strong>Subtotal</strong></span>
-            <span className="text-left text-xs font-questrial  text-black">${subtotal}</span>
+            <span className="text-left text-xs font-poppins text-black">
+              <strong>Subtotal</strong>
+            </span>
+            <span className="text-left text-xs font-questrial  text-black">
+              ${subtotal}
+            </span>
           </div>
           <div className="justify-between flex">
-            <span className="text-left text-xs text-black font-poppins"><strong>Total</strong></span>
-            <span className="text-left text-xs font-questrial text-black">${totalMonto}</span>
+            <span className="text-left text-xs text-black font-poppins">
+              <strong>Total</strong>
+            </span>
+            <span className="text-left text-xs font-questrial text-black">
+              ${totalMonto}
+            </span>
           </div>
         </div>
         <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 gap-2 mt-3 border-t pt-2">
